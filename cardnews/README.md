@@ -1,14 +1,16 @@
 # BYCHEM 카드뉴스 자동화
 
-Markdown 원고를 6장 카드뉴스 JSON으로 정리하고, BYCHEM 전용 HTML/CSS 템플릿을 이용해 1080×1350 PNG로 렌더링합니다.
+Markdown 원고를 카드뉴스 JSON으로 정리하고, BYCHEM 전용 HTML/CSS 템플릿을 이용해 1080×1350 PNG로 렌더링합니다.
 
 ## 카드 구성
 
 1. 표지: 원고 주제에 맞춘 AI 생성 배경, 제목, 해시태그
-2. 본문 4장: 전체 사진 배경, 하단 소제목과 요약 본문
+2. 본문 3~6장: 원고의 핵심 단락을 완결된 1~2문장으로 그대로 사용
 3. 아웃트로: 표지와 완전히 동일한 배경, BYCHEM CI, 20px AI 이미지 고지
 
-디자인은 `bychem_cardnews_prototype_updated.zip`의 승인 프로토타입을 기준으로 합니다. 모든 카드 JSON에는 `image_prompt`가 포함됩니다. AI 이미지 API를 연결할 때 1장의 생성 이미지 경로를 `cover.background`에 넣으면 6장도 렌더러가 같은 파일을 자동 재사용합니다. 6장용 이미지를 별도로 생성하지 않습니다. 2~5장은 각 슬라이드의 `background`에 생성 이미지 경로를 넣습니다. API 연결 전에는 프로토타입의 샘플 배경을 사용합니다.
+디자인은 `bychem_cardnews_prototype_updated.zip`의 승인 프로토타입을 기준으로 합니다. 모든 카드 JSON에는 `image_prompt`가 포함됩니다. AI 이미지 API를 연결할 때 표지의 생성 이미지 경로를 `cover.background`에 넣으면 아웃트로도 렌더러가 같은 파일을 자동 재사용합니다. 아웃트로용 이미지는 별도로 생성하지 않습니다. 본문은 각 슬라이드의 `background`에 생성 이미지 경로를 넣습니다. API 연결 전에는 프로토타입의 샘플 배경을 순환 사용합니다.
+
+본문은 글자 수를 맞추기 위해 자르거나 말줄임표를 붙이지 않으며, 페이지 수를 채우기 위한 임시 문구도 만들지 않습니다. 원고에는 최소 3개의 본문 소제목(`##`)이 필요하고, 6개를 넘으면 앞의 핵심 흐름과 마지막 결론을 사용합니다.
 
 고정 글자 크기는 상단 브랜드 36.4px, 표지 제목 95.2px, 해시태그 36.4px, 본문 제목 70px, 본문 37.8px, 아웃트로 고지 28px입니다. 표지 하단의 BYCHEM Blue는 별도 사각 도형 없이 하나의 연속 그라디에이션으로 처리합니다.
 
@@ -23,7 +25,7 @@ pnpm exec playwright install chromium
 pnpm build data/sample.md output/sample
 ```
 
-결과는 `output/sample/`에 `cardnews.json`과 `01_cover.png`부터 `06_outro.png`까지 생성됩니다.
+결과는 `output/sample/`에 `cardnews.json`, 표지, 본문 3~6장, 아웃트로 PNG로 생성됩니다. 아웃트로 파일 번호는 본문 장수에 따라 자동으로 정해집니다.
 
 템플릿만 빠르게 미리 보려면 `cardnews/`를 로컬 웹 서버로 연 뒤 아래 주소를 사용합니다.
 

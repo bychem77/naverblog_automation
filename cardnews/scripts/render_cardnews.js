@@ -16,8 +16,8 @@ const outputDir = path.resolve(outputArg);
 const templatePath = path.resolve(__dirname, '../templates/card.html');
 const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 
-if (!data.cover || !Array.isArray(data.slides) || data.slides.length !== 4 || !data.outro) {
-  throw new Error(`Expected cover, exactly 4 slides, and outro in ${jsonPath}`);
+if (!data.cover || !Array.isArray(data.slides) || data.slides.length < 3 || data.slides.length > 6 || !data.outro) {
+  throw new Error(`Expected cover, 3 to 6 content slides, and outro in ${jsonPath}`);
 }
 
 async function main() {
@@ -30,7 +30,7 @@ async function main() {
   const jobs = [
     { type: 'cover', index: 0, name: '01_cover.png' },
     ...data.slides.map((_, index) => ({ type: 'content', index, name: `${String(index + 2).padStart(2, '0')}_content.png` })),
-    { type: 'outro', index: 0, name: '06_outro.png' }
+    { type: 'outro', index: 0, name: `${String(data.slides.length + 2).padStart(2, '0')}_outro.png` }
   ];
 
   for (const job of jobs) {
@@ -43,7 +43,7 @@ async function main() {
   await browser.close();
   const copiedJsonPath = path.join(outputDir, 'cardnews.json');
   if (path.resolve(jsonPath) !== path.resolve(copiedJsonPath)) fs.copyFileSync(jsonPath, copiedJsonPath);
-  console.log(`Rendered 6 PNG files in ${outputDir}`);
+  console.log(`Rendered ${jobs.length} PNG files in ${outputDir}`);
 }
 
 main().catch((error) => {

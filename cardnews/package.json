@@ -2,7 +2,7 @@
   "name": "bychem-cardnews",
   "version": "1.0.0",
   "private": true,
-  "description": "Markdown to six-card BYCHEM card-news renderer",
+  "description": "Markdown to BYCHEM card-news renderer",
   "packageManager": "pnpm@10.15.1",
   "scripts": {
     "convert": "node scripts/md_to_cardnews.js",

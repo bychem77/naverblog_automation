@@ -29,7 +29,7 @@ function stripEmoji(value = '') {
 }
 
 function isMetaHeading(title) {
-  return /^(A\.|B\.|C\.|D\.|E\.)?\s*(승인용 요약|네이버 블로그 본문|발행 설정|본문|태그|이미지|사실|참고|출처)/i.test(title);
+  return /^(A\.|B\.|C\.|D\.|E\.)?\s*(승인용 요약|네이버 블로그 본문|발행 설정|본문|네이버\s*태그|태그|이미지|사실|참고|출처)/i.test(title);
 }
 
 function isNoise(line) {
@@ -63,32 +63,10 @@ function sentencesFrom(lines) {
   return items.filter(Boolean);
 }
 
-function shorten(text, max = 94) {
-  const value = cleanInline(text);
-  if (value.length <= max) return value;
-  const cut = value.slice(0, max - 1);
-  const boundary = Math.max(cut.lastIndexOf(' '), cut.lastIndexOf(','));
-  return `${cut.slice(0, boundary > max * 0.55 ? boundary : max - 1).trim()}…`;
-}
-
-function completeSentence(text = '') {
-  const value = cleanInline(text);
-  if (!value || /[.!?。]$/.test(value)) return value;
-  return `${value}.`;
-}
-
-function summarize(sentences, max = 120) {
-  const candidates = sentences.map(completeSentence).filter(Boolean);
-  if (!candidates.length) return '';
-
-  // Card bodies should read as finished copy, never as character-limited fragments.
-  // Keep one complete sentence even when it exceeds the preferred visual length,
-  // then add a second only when both still fit comfortably on the card.
-  const summary = [candidates[0]];
-  if (candidates[1] && `${candidates[0]} ${candidates[1]}`.length <= max) {
-    summary.push(candidates[1]);
-  }
-  return summary.join(' ');
+function summarize(sentences) {
+  const candidates = sentences.map(cleanInline).filter(Boolean);
+  const complete = candidates.filter((sentence) => /[.!?。]$/.test(sentence));
+  return (complete.length ? complete : candidates).slice(0, 2).join(' ');
 }
 
 function parseTags(source) {
@@ -137,29 +115,14 @@ let contentSections = headings.filter((section) => {
   return body.length > 0;
 });
 
-// Keep the prototype's four-part story: definition, role, selection/technology, safety/summary.
-if (contentSections.length > 4) {
-  const selected = [];
-  const take = (pattern) => {
-    const match = contentSections.find((section) => !selected.includes(section) && pattern.test(section.title));
-    if (match) selected.push(match);
-  };
-  selected.push(contentSections[0]);
-  take(/왜|역할|어떤 산업|활용|중요/);
-  take(/선택 기준|선택해야|어떻게 선택|다른|다를|차이|만드는 데|필요한 기술|품질/);
-  take(/안전|열관리|확인해야|체크|한 문장|정리|마무리|결론/);
-  for (const section of contentSections) {
-    if (selected.length === 4) break;
-    if (!selected.includes(section)) selected.push(section);
-  }
-  contentSections = selected;
+// Use the manuscript's own story without padding. If it is unusually long,
+// retain the first five sections and its final takeaway.
+if (contentSections.length > 6) {
+  contentSections = [...contentSections.slice(0, 5), contentSections.at(-1)];
 }
 
-while (contentSections.length < 4) {
-  contentSections.push({
-    title: ['핵심 원리', '활용 포인트', '선택 기준', '안전 체크'][contentSections.length],
-    lines: ['원고의 관련 내용을 확인해 카드 문구를 보완해 주세요.']
-  });
+if (contentSections.length < 3) {
+  throw new Error(`At least 3 content sections are required; found ${contentSections.length} in ${inputPath}`);
 }
 
 const defaultTags = metadata.tags.length ? metadata.tags : ['#바이켐', '#산업인사이트', '#카드뉴스'];
@@ -167,14 +130,14 @@ const commonTags = new Set(['#바이켐', '#페인트시너', '#산업용세정�
 const topicTags = defaultTags.filter((tag) => !commonTags.has(tag));
 const coverTags = (topicTags.length >= 3 ? topicTags : defaultTags).slice(0, 3);
 
-const slides = contentSections.slice(0, 4).map((section, index) => {
+const slides = contentSections.map((section, index) => {
   const cleanTitle = stripEmoji(section.title);
   const sentences = sentencesFrom(section.lines);
-  const body = summarize(sentences) || '원고의 관련 내용을 확인해 카드 문구를 보완해 주세요.';
+  const body = summarize(sentences);
   return {
-    title: shorten(cleanTitle, 28),
+    title: cleanTitle,
     body,
-    background: `../assets/backgrounds/bg_0${index + 2}.jpg`,
+    background: `../assets/backgrounds/bg_0${(index % 4) + 2}.jpg`,
     image_prompt: `BYCHEM industrial editorial image about "${cleanTitle}". Show ${sentences.slice(0, 2).join(' ')}. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.`
   };
 });
@@ -189,7 +152,7 @@ const result = {
   },
   source_md: path.basename(inputPath),
   cover: {
-    title: shorten(title.replace(/\s*쉽게 알아보기\s*$/u, ''), 28),
+    title: title.replace(/\s*쉽게 알아보기\s*$/u, ''),
     hashtags: coverTags,
     background: '../assets/backgrounds/bg_01.jpg',
     image_prompt: `Create a premium hero image for a Korean BYCHEM B2B card-news cover about "${title}". Visually express the specific subject using realistic industrial, laboratory, material, or technology photography. Clean professional mood, strong single focal point, 4:5 portrait composition, leave the lower 40 percent calm enough for a large Korean title, no text, no logo, no watermark, no identifiable company or product, no hazardous or sensational scene.`
@@ -211,4 +174,4 @@ const result = {
 
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, `${JSON.stringify(result, null, 2)}\n`, 'utf8');
-console.log(`Created ${outputPath} (6 cards)`);
+console.log(`Created ${outputPath} (${slides.length + 2} cards)`);
