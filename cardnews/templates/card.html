@@ -49,10 +49,27 @@
 
     window.renderCard = renderCard;
     const params = new URLSearchParams(location.search);
+    const previewData = {
+      brand_line: 'BYCHEM   |   SOLUTION',
+      cover: {
+        title: '반도체 공정 속 숨은 필수템, IPA를 아시나요?',
+        hashtags: ['#IPA', '#반도체세정', '#전자급IPA'],
+        background: '../assets/backgrounds/bg_clean_semiconductor.png'
+      },
+      slides: [],
+      outro: {
+        notice: '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.',
+        background: '../assets/backgrounds/bg_clean_semiconductor.png'
+      }
+    };
+
     if (params.has('data')) {
       fetch(params.get('data'))
         .then((response) => response.json())
-        .then((data) => renderCard(params.get('type') || 'cover', Number(params.get('index') || 0), data));
+        .then((data) => renderCard(params.get('type') || 'cover', Number(params.get('index') || 0), data))
+        .catch(() => renderCard('cover', 0, previewData));
+    } else {
+      renderCard('cover', 0, previewData);
     }
   </script>
 </body>
