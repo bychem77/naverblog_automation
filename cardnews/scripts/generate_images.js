@@ -59,13 +59,10 @@ function findManualImage(directory, stem) {
   return null;
 }
 
-function stockQueryFrom(title) {
-  const latinTerms = title.match(/[A-Za-z][A-Za-z0-9+-]*/g)?.join(' ');
-  return latinTerms ? `${latinTerms} industrial chemical` : 'industrial laboratory technology';
-}
+const usedPexelsPhotoIds = new Set();
 
 async function requestPexelsImage(query) {
-  const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=5&orientation=portrait`;
+  const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=10&orientation=portrait`;
   const searchResponse = await fetch(searchUrl, {
     headers: { Authorization: pexelsApiKey },
     signal: AbortSignal.timeout(30_000)
@@ -73,8 +70,11 @@ async function requestPexelsImage(query) {
   if (!searchResponse.ok) throw new Error(`Pexels API returned HTTP ${searchResponse.status}`);
 
   const searchPayload = await searchResponse.json();
-  const photo = searchPayload.photos?.[0];
-  if (!photo) throw new Error(`No Pexels results for "${query}"`);
+  const photos = searchPayload.photos || [];
+  if (!photos.length) throw new Error(`No Pexels results for "${query}"`);
+
+  const photo = photos.find((candidate) => !usedPexelsPhotoIds.has(candidate.id)) || photos[0];
+  usedPexelsPhotoIds.add(photo.id);
 
   const imageUrl = photo.src.large2x || photo.src.large || photo.src.original;
   const imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(60_000) });
@@ -148,7 +148,7 @@ async function main() {
       label: 'cover',
       card: data.cover,
       prompt: data.cover.image_prompt,
-      query: stockQueryFrom(data.cover.title),
+      query: data.cover.image_query || 'industrial laboratory technology',
       direction: 'Use one strong topic-specific hero subject and a premium, clean composition.',
       manualStem: 'cover',
       apiFilePath: path.join(imageDir, 'cover.png')
@@ -157,7 +157,7 @@ async function main() {
       label: `content ${index + 1}`,
       card: slide,
       prompt: slide.image_prompt,
-      query: stockQueryFrom(slide.title),
+      query: slide.image_query || 'industrial laboratory technology',
       direction: variations[index % variations.length],
       manualStem: `content_${String(index + 1).padStart(2, '0')}`,
       apiFilePath: path.join(imageDir, `content_${String(index + 1).padStart(2, '0')}.png`)

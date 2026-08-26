@@ -79,6 +79,34 @@ function parseMetadata(source) {
   return { category: category || 'BYCHEM SOLUTION', tags: parseTags(source) };
 }
 
+// Manuscripts often spell out an acronym once, e.g. "IPA(Isopropyl Alcohol)".
+// Capture that so stock photo search uses the full term instead of an ambiguous acronym.
+function findAcronymExpansions(source) {
+  const map = new Map();
+  const pattern = /\*{0,2}\b([A-Z]{2,8})\*{0,2}\(([A-Za-z][A-Za-z .-]{2,50})\)/g;
+  let match;
+  while ((match = pattern.exec(source))) {
+    if (!map.has(match[1])) map.set(match[1], match[2].trim());
+  }
+  return map;
+}
+
+const genericStockQueries = [
+  'industrial laboratory equipment',
+  'semiconductor manufacturing facility',
+  'chemical process technology',
+  'precision engineering workshop',
+  'scientific research laboratory',
+  'industrial factory technology'
+];
+
+function stockQueryFrom(title, expansions, index) {
+  const latinTerms = title.match(/[A-Za-z][A-Za-z0-9+-]*/g) || [];
+  if (!latinTerms.length) return genericStockQueries[index % genericStockQueries.length];
+  const expanded = [...new Set(latinTerms.map((term) => expansions.get(term.toUpperCase()) || term))];
+  return `${expanded.join(' ')} ${genericStockQueries[index % genericStockQueries.length]}`;
+}
+
 function parseSections(source) {
   const lines = source.split('\n');
   const headings = [];
@@ -130,6 +158,8 @@ const commonTags = new Set(['#바이켐', '#페인트시너', '#산업용세정�
 const topicTags = defaultTags.filter((tag) => !commonTags.has(tag));
 const coverTags = (topicTags.length >= 3 ? topicTags : defaultTags).slice(0, 3);
 
+const acronymExpansions = findAcronymExpansions(markdown);
+
 const slides = contentSections.map((section, index) => {
   const cleanTitle = stripEmoji(section.title);
   const sentences = sentencesFrom(section.lines);
@@ -138,7 +168,8 @@ const slides = contentSections.map((section, index) => {
     title: cleanTitle,
     body,
     background: `../assets/backgrounds/bg_0${(index % 4) + 2}.jpg`,
-    image_prompt: `BYCHEM industrial editorial image about "${cleanTitle}". Show ${sentences.slice(0, 2).join(' ')}. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.`
+    image_prompt: `BYCHEM industrial editorial image about "${cleanTitle}". Show ${sentences.slice(0, 2).join(' ')}. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.`,
+    image_query: stockQueryFrom(cleanTitle, acronymExpansions, index + 1)
   };
 });
 
@@ -155,7 +186,8 @@ const result = {
     title: title.replace(/\s*쉽게 알아보기\s*$/u, ''),
     hashtags: coverTags,
     background: '../assets/backgrounds/bg_01.jpg',
-    image_prompt: `Create a premium hero image for a Korean BYCHEM B2B card-news cover about "${title}". Visually express the specific subject using realistic industrial, laboratory, material, or technology photography. Clean professional mood, strong single focal point, 4:5 portrait composition, leave the lower 40 percent calm enough for a large Korean title, no text, no logo, no watermark, no identifiable company or product, no hazardous or sensational scene.`
+    image_prompt: `Create a premium hero image for a Korean BYCHEM B2B card-news cover about "${title}". Visually express the specific subject using realistic industrial, laboratory, material, or technology photography. Clean professional mood, strong single focal point, 4:5 portrait composition, leave the lower 40 percent calm enough for a large Korean title, no text, no logo, no watermark, no identifiable company or product, no hazardous or sensational scene.`,
+    image_query: stockQueryFrom(title, acronymExpansions, 0)
   },
   slides,
   outro: {
