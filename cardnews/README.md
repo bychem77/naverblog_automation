@@ -4,11 +4,11 @@ Markdown 원고를 6장 카드뉴스 JSON으로 정리하고, BYCHEM 전용 HTML
 
 ## 카드 구성
 
-1. 표지: 웨이퍼 배경, 제목, 해시태그
+1. 표지: 원고 주제에 맞춘 AI 생성 배경, 제목, 해시태그
 2. 본문 4장: 전체 사진 배경, 하단 소제목과 요약 본문
-3. 아웃트로: 웨이퍼 배경, BYCHEM CI, 20px AI 이미지 고지
+3. 아웃트로: 표지와 완전히 동일한 배경, BYCHEM CI, 20px AI 이미지 고지
 
-디자인은 `bychem_cardnews_prototype_updated.zip`의 승인 프로토타입을 기준으로 합니다. 2~5장 JSON에는 `image_prompt`가 포함됩니다. AI 이미지 API를 나중에 연결할 때 생성된 이미지 경로를 각 슬라이드의 `background`에 넣으면 해당 이미지가 렌더링됩니다. API 연결 전에는 프로토타입의 샘플 배경을 사용합니다.
+디자인은 `bychem_cardnews_prototype_updated.zip`의 승인 프로토타입을 기준으로 합니다. 모든 카드 JSON에는 `image_prompt`가 포함됩니다. AI 이미지 API를 연결할 때 1장의 생성 이미지 경로를 `cover.background`에 넣으면 6장도 렌더러가 같은 파일을 자동 재사용합니다. 6장용 이미지를 별도로 생성하지 않습니다. 2~5장은 각 슬라이드의 `background`에 생성 이미지 경로를 넣습니다. API 연결 전에는 프로토타입의 샘플 배경을 사용합니다.
 
 ## 로컬 사용법
 

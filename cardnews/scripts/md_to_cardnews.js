@@ -171,13 +171,15 @@ const result = {
   cover: {
     title: shorten(title.replace(/\s*쉽게 알아보기\s*$/u, ''), 54),
     hashtags: coverTags,
-    background: '../assets/backgrounds/bg_clean_semiconductor.png',
-    image_prompt: 'Clean premium semiconductor wafer background, warm metallic tones, realistic macro photography, subtle dark overlay feel, 4:5 portrait composition, no text, no logo, no watermark.'
+    background: '../assets/backgrounds/bg_01.jpg',
+    image_prompt: `Create a premium hero image for a Korean BYCHEM B2B card-news cover about "${title}". Visually express the specific subject using realistic industrial, laboratory, material, or technology photography. Clean professional mood, strong single focal point, 4:5 portrait composition, leave the lower 40 percent calm enough for a large Korean title, no text, no logo, no watermark, no identifiable company or product, no hazardous or sensational scene.`
   },
   slides,
   outro: {
     notice: '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.',
-    background: '../assets/backgrounds/bg_clean_semiconductor.png'
+    background: '../assets/backgrounds/bg_01.jpg',
+    same_background_as: 'cover',
+    image_prompt: 'Reuse the exact same generated image file as cover.background. Do not generate a variation.'
   },
   metadata: {
     derived_from: title,

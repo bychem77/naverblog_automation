@@ -38,7 +38,7 @@
       } else {
         const card = data.outro;
         html = `<section id="card" class="card">
-          <img class="bg" src="${escapeHtml(card.background)}" alt="" />
+          <img class="bg" src="${escapeHtml(data.cover.background)}" alt="" />
           <div class="overlay overlay-content"></div>${brand}
           <div class="outro-center"><img class="logo-center" src="../assets/logo_white.svg" alt="BYCHEM" />
           <div class="outro-notice">${escapeHtml(card.notice)}</div></div>
@@ -54,12 +54,13 @@
       cover: {
         title: '반도체 공정 속 숨은 필수템, IPA를 아시나요?',
         hashtags: ['#IPA', '#반도체세정', '#전자급IPA'],
-        background: '../assets/backgrounds/bg_clean_semiconductor.png'
+        background: '../assets/backgrounds/bg_01.jpg'
       },
       slides: [],
       outro: {
         notice: '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.',
-        background: '../assets/backgrounds/bg_clean_semiconductor.png'
+        background: '../assets/backgrounds/bg_01.jpg',
+        same_background_as: 'cover'
       }
     };
 
