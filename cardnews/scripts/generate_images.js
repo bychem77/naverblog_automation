@@ -18,6 +18,7 @@ const apiKey = process.env.OPENAI_API_KEY?.trim();
 const model = process.env.OPENAI_IMAGE_MODEL?.trim() || 'gpt-image-2';
 const quality = process.env.OPENAI_IMAGE_QUALITY?.trim() || 'medium';
 const size = process.env.OPENAI_IMAGE_SIZE?.trim() || '1024x1536';
+const pexelsApiKey = process.env.PEXELS_API_KEY?.trim();
 const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 
 if (!data.cover?.image_prompt || !Array.isArray(data.slides) || !data.outro) {
@@ -58,6 +59,29 @@ function findManualImage(directory, stem) {
   return null;
 }
 
+function stockQueryFrom(title) {
+  const latinTerms = title.match(/[A-Za-z][A-Za-z0-9+-]*/g)?.join(' ');
+  return latinTerms ? `${latinTerms} industrial chemical` : 'industrial laboratory technology';
+}
+
+async function requestPexelsImage(query) {
+  const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=5&orientation=portrait`;
+  const searchResponse = await fetch(searchUrl, {
+    headers: { Authorization: pexelsApiKey },
+    signal: AbortSignal.timeout(30_000)
+  });
+  if (!searchResponse.ok) throw new Error(`Pexels API returned HTTP ${searchResponse.status}`);
+
+  const searchPayload = await searchResponse.json();
+  const photo = searchPayload.photos?.[0];
+  if (!photo) throw new Error(`No Pexels results for "${query}"`);
+
+  const imageUrl = photo.src.large2x || photo.src.large || photo.src.original;
+  const imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(60_000) });
+  if (!imageResponse.ok) throw new Error(`Failed to download Pexels photo (HTTP ${imageResponse.status})`);
+  return Buffer.from(await imageResponse.arrayBuffer());
+}
+
 async function requestImage(prompt) {
   let lastError;
   for (let attempt = 1; attempt <= 3; attempt += 1) {
@@ -94,16 +118,25 @@ async function requestImage(prompt) {
 }
 
 async function generate(job) {
-  try {
-    const bytes = await requestImage(`${sharedDirection} ${job.direction} ${job.prompt}`);
-    fs.writeFileSync(job.apiFilePath, bytes, { mode: 0o600 });
-    job.card.background = templateRelative(job.apiFilePath);
-    console.log(`Generated ${path.basename(job.apiFilePath)}`);
-    return true;
-  } catch (error) {
-    console.warn(`Image generation failed for ${job.label}; keeping its placeholder background. ${error.message}`);
-    return false;
+  const providers = [];
+  if (pexelsApiKey) providers.push({ name: 'pexels', fetchBytes: () => requestPexelsImage(job.query) });
+  if (apiKey) providers.push({ name: 'openai', fetchBytes: () => requestImage(`${sharedDirection} ${job.direction} ${job.prompt}`) });
+
+  let lastError;
+  for (const provider of providers) {
+    try {
+      const bytes = await provider.fetchBytes();
+      fs.writeFileSync(job.apiFilePath, bytes, { mode: 0o600 });
+      job.card.background = templateRelative(job.apiFilePath);
+      console.log(`Generated ${path.basename(job.apiFilePath)} via ${provider.name}`);
+      return provider.name;
+    } catch (error) {
+      lastError = error;
+      console.warn(`${provider.name} image fetch failed for ${job.label}: ${error.message}`);
+    }
   }
+  console.warn(`Image sourcing failed for ${job.label}; keeping its placeholder background.${lastError ? ` ${lastError.message}` : ''}`);
+  return false;
 }
 
 async function main() {
@@ -115,6 +148,7 @@ async function main() {
       label: 'cover',
       card: data.cover,
       prompt: data.cover.image_prompt,
+      query: stockQueryFrom(data.cover.title),
       direction: 'Use one strong topic-specific hero subject and a premium, clean composition.',
       manualStem: 'cover',
       apiFilePath: path.join(imageDir, 'cover.png')
@@ -123,6 +157,7 @@ async function main() {
       label: `content ${index + 1}`,
       card: slide,
       prompt: slide.image_prompt,
+      query: stockQueryFrom(slide.title),
       direction: variations[index % variations.length],
       manualStem: `content_${String(index + 1).padStart(2, '0')}`,
       apiFilePath: path.join(imageDir, `content_${String(index + 1).padStart(2, '0')}.png`)
@@ -143,15 +178,16 @@ async function main() {
   }
 
   const apiResults = [];
-  if (apiKey && pending.length) {
+  if ((pexelsApiKey || apiKey) && pending.length) {
     fs.mkdirSync(imageDir, { recursive: true });
     for (const job of pending) apiResults.push(await generate(job));
   } else if (pending.length) {
-    console.log('OPENAI_API_KEY is not configured; missing manual images will use placeholder backgrounds.');
+    console.log('Neither PEXELS_API_KEY nor OPENAI_API_KEY is configured; missing manual images will use placeholder backgrounds.');
   }
 
-  const apiCount = apiResults.filter(Boolean).length;
-  const placeholderCount = jobs.length - manualCount - apiCount;
+  const pexelsCount = apiResults.filter((result) => result === 'pexels').length;
+  const openaiCount = apiResults.filter((result) => result === 'openai').length;
+  const placeholderCount = jobs.length - manualCount - pexelsCount - openaiCount;
 
   data.outro.background = data.cover.background;
   data.outro.same_background_as = 'cover';
@@ -159,7 +195,8 @@ async function main() {
     ...data.metadata,
     image_sources: {
       manual: manualCount,
-      openai: apiCount,
+      pexels: pexelsCount,
+      openai: openaiCount,
       placeholders: placeholderCount,
       total: jobs.length,
       model,
@@ -169,7 +206,7 @@ async function main() {
   };
 
   fs.writeFileSync(jsonPath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
-  console.log(`Image preparation complete: ${manualCount} manual, ${apiCount} OpenAI, ${placeholderCount} placeholder.`);
+  console.log(`Image preparation complete: ${manualCount} manual, ${pexelsCount} Pexels, ${openaiCount} OpenAI, ${placeholderCount} placeholder.`);
 }
 
 main().catch((error) => {

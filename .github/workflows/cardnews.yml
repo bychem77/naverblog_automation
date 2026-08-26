@@ -65,6 +65,7 @@ jobs:
         env:
           INPUT_MARKDOWN: ${{ inputs.markdown_path }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: |
           case "$INPUT_MARKDOWN" in
             cardnews/data/*.md) ;;
@@ -78,6 +79,7 @@ jobs:
         if: github.event_name == 'push'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: |
           find data -type f -name '*.md' ! -name 'README.md' ! -name 'sample.md' -print0 | while IFS= read -r -d '' input; do
             name=$(basename "$input" .md)
