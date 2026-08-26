@@ -104,6 +104,27 @@ const genericStockQueries = [
   'industrial supply chain logistics'
 ];
 
+// A handful of English chemistry words double as an unrelated consumer
+// category on stock-photo sites — "alcohol" pulls in beer/wine/champagne
+// photos regardless of "isopropyl" sitting right next to it. Strip those
+// words from the search query unless the manuscript is actually about that
+// category (see isBeverageTopic below), so an off-topic result never comes
+// from the query itself.
+const ambiguousQueryWords = ['alcohol'];
+
+function stripAmbiguousWords(term) {
+  return ambiguousQueryWords
+    .reduce((acc, word) => acc.replace(new RegExp(`\\b${word}\\b`, 'gi'), ''), term)
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+const beverageTopicKeywords = [
+  '맥주', '양조', '브루어리', '와인', '샴페인', '칵테일', '소주', '위스키', '보드카', '증류주', '음주',
+  'beer', 'brewery', 'brewing', 'whisky', 'whiskey', 'vodka', 'wine', 'champagne', 'cocktail', 'liquor', 'rum', 'tequila'
+];
+const isBeverageTopic = beverageTopicKeywords.some((word) => markdown.toLowerCase().includes(word));
+
 // Only fall back to a generic descriptor when the manuscript itself gives us
 // nothing to search on. When it does, the query should be the manuscript's own
 // terms alone — appending a generic word like "industrial" lets that common
@@ -113,7 +134,11 @@ function stockQueryFrom(text, expansions, index) {
   // (already captured via `expansions`) isn't tokenized a second time.
   const latinTerms = text.replace(/\([^)]*\)/g, ' ').match(/[A-Za-z][A-Za-z0-9+-]{1,}/g) || [];
   if (!latinTerms.length) return genericStockQueries[index % genericStockQueries.length];
-  const expanded = [...new Set(latinTerms.map((term) => expansions.get(term.toUpperCase()) || term))];
+  let expanded = [...new Set(latinTerms.map((term) => expansions.get(term.toUpperCase()) || term))];
+  if (!isBeverageTopic) {
+    expanded = expanded.map(stripAmbiguousWords).filter(Boolean);
+    if (!expanded.length) return genericStockQueries[index % genericStockQueries.length];
+  }
   return expanded.slice(0, 6).join(' ');
 }
 
@@ -211,7 +236,8 @@ const result = {
     derived_from: title,
     category: metadata.category,
     sections_detected: headings.filter((section) => section.level >= 2 && !isMetaHeading(section.title)).map((section) => section.title),
-    official_basis_present: /공식 근거|사실·안전 근거|참고자료/i.test(markdown)
+    official_basis_present: /공식 근거|사실·안전 근거|참고자료/i.test(markdown),
+    beverage_topic: isBeverageTopic
   }
 };
 

@@ -61,6 +61,31 @@ function pickUnusedPhoto(candidates, idOf, keyPrefix) {
   return chosen;
 }
 
+// A query term can legitimately collide with an unrelated stock-photo category
+// (e.g. "isopropyl alcohol" pulling in drinking-alcohol photos because of the
+// word "alcohol"). The query itself is already stripped of that word unless
+// the manuscript is genuinely about that category (see beverage_topic in
+// md_to_cardnews.js), and this is a backup net: reject candidates whose own
+// description still names that unrelated category, unless this manuscript
+// actually is about it.
+const offTopicAltKeywords = [
+  'beer', 'ale', 'lager', 'brewery', 'brewing', 'pint', 'whisky', 'whiskey',
+  'vodka', 'rum', 'gin ', 'tequila', 'wine', 'champagne', 'prosecco', 'sparkling wine',
+  'cocktail', 'liquor', 'bartender', 'pub'
+];
+const allowOffTopicAlt = Boolean(data.metadata?.beverage_topic);
+
+function isOffTopic(photo, altOf) {
+  const alt = (altOf(photo) || '').toLowerCase();
+  return offTopicAltKeywords.some((word) => alt.includes(word));
+}
+
+function pickOnTopicUnusedPhoto(candidates, idOf, altOf, keyPrefix) {
+  const onTopic = allowOffTopicAlt ? candidates : candidates.filter((candidate) => !isOffTopic(candidate, altOf));
+  const pool = onTopic.length ? onTopic : candidates;
+  return pickUnusedPhoto(pool, idOf, keyPrefix);
+}
+
 async function requestPexelsImage(query) {
   const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=20&orientation=portrait`;
   const searchResponse = await fetch(searchUrl, {
@@ -73,7 +98,7 @@ async function requestPexelsImage(query) {
   const photos = searchPayload.photos || [];
   if (!photos.length) throw new Error(`No Pexels results for "${query}"`);
 
-  const photo = pickUnusedPhoto(photos, (p) => p.id, 'pexels');
+  const photo = pickOnTopicUnusedPhoto(photos, (p) => p.id, (p) => p.alt, 'pexels');
   const imageUrl = photo.src.large2x || photo.src.large || photo.src.original;
   const imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(60_000) });
   if (!imageResponse.ok) throw new Error(`Failed to download Pexels photo (HTTP ${imageResponse.status})`);
