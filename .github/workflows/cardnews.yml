@@ -1,0 +1,86 @@
+name: BYCHEM Card News
+
+on:
+  workflow_dispatch:
+    inputs:
+      markdown_path:
+        description: "Markdown path (for example: cardnews/data/sample.md)"
+        required: true
+        default: "cardnews/data/sample.md"
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - "cardnews/data/**/*.md"
+      - "cardnews/scripts/**"
+      - "cardnews/templates/**"
+      - "cardnews/assets/**"
+      - "cardnews/package.json"
+      - "cardnews/pnpm-lock.yaml"
+      - ".github/workflows/cardnews.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cardnews-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: cardnews
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: cardnews/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Render requested Markdown
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          INPUT_MARKDOWN: ${{ inputs.markdown_path }}
+        run: |
+          case "$INPUT_MARKDOWN" in
+            cardnews/data/*.md) ;;
+            *) echo "Input must be a Markdown file under cardnews/data/" >&2; exit 1 ;;
+          esac
+          test -f "../$INPUT_MARKDOWN"
+          name=$(basename "$INPUT_MARKDOWN" .md)
+          pnpm build "../$INPUT_MARKDOWN" "output/$name"
+
+      - name: Render all Markdown inputs
+        if: github.event_name == 'push'
+        run: |
+          find data -type f -name '*.md' ! -name 'README.md' -print0 | while IFS= read -r -d '' input; do
+            name=$(basename "$input" .md)
+            pnpm build "$input" "output/$name"
+          done
+
+      - name: Upload PNG and JSON artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bychem-cardnews-${{ github.run_number }}
+          path: cardnews/output/
+          if-no-files-found: error
+          retention-days: 30

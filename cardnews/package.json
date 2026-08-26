@@ -1,0 +1,16 @@
+{
+  "name": "bychem-cardnews",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Markdown to six-card BYCHEM card-news renderer",
+  "packageManager": "pnpm@10.15.1",
+  "scripts": {
+    "convert": "node scripts/md_to_cardnews.js",
+    "render": "node scripts/render_cardnews.js",
+    "build": "sh scripts/render.sh"
+  },
+  "dependencies": {
+    "playwright": "1.62.1",
+    "pretendard": "1.3.9"
+  }
+}

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <title>BYCHEM Card News</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    const escapeHtml = (value = '') => String(value)
+      .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+
+    function renderCard(type, index, data) {
+      const brand = `<div class="brand-line">${escapeHtml(data.brand_line)}</div>`;
+      const watermark = '<img class="logo logo-watermark" src="../assets/logo_white.svg" alt="BYCHEM" />';
+      let html = '';
+
+      if (type === 'cover') {
+        const card = data.cover;
+        const tags = card.hashtags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
+        html = `<section id="card" class="card">
+          <img class="bg" src="${escapeHtml(card.background)}" alt="" />
+          <div class="overlay overlay-cover"></div>${brand}
+          <div class="cover-copy"><h1 class="cover-title">${escapeHtml(card.title)}</h1><div class="tags">${tags}</div></div>
+          <img class="logo" src="../assets/logo_white.svg" alt="BYCHEM" />
+        </section>`;
+      } else if (type === 'content') {
+        const card = data.slides[index];
+        html = `<section id="card" class="card">
+          <img class="bg" src="${escapeHtml(card.background)}" alt="" />
+          <div class="overlay overlay-content"></div>${brand}
+          <div class="content-copy"><h2 class="content-title">${escapeHtml(card.title)}</h2><p class="content-body">${escapeHtml(card.body)}</p></div>
+          ${watermark}
+        </section>`;
+      } else {
+        const card = data.outro;
+        html = `<section id="card" class="card">
+          <img class="bg" src="${escapeHtml(card.background)}" alt="" />
+          <div class="overlay overlay-content"></div>${brand}
+          <div class="outro-center"><img class="logo-center" src="../assets/logo_white.svg" alt="BYCHEM" />
+          <div class="outro-notice">${escapeHtml(card.notice)}</div></div>
+        </section>`;
+      }
+      document.querySelector('#app').innerHTML = html;
+    }
+
+    window.renderCard = renderCard;
+    const params = new URLSearchParams(location.search);
+    if (params.has('data')) {
+      fetch(params.get('data'))
+        .then((response) => response.json())
+        .then((data) => renderCard(params.get('type') || 'cover', Number(params.get('index') || 0), data));
+    }
+  </script>
+</body>
+</html>
