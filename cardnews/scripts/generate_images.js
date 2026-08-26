@@ -53,14 +53,6 @@ function templateRelative(filePath) {
 const usedPhotoIds = new Set();
 const pexelsCredits = [];
 
-function pickUnusedPhoto(candidates, idOf, keyPrefix) {
-  const unused = candidates.filter((candidate) => !usedPhotoIds.has(`${keyPrefix}:${idOf(candidate)}`));
-  const pool = unused.length ? unused : candidates;
-  const chosen = pool[Math.floor(Math.random() * pool.length)];
-  usedPhotoIds.add(`${keyPrefix}:${idOf(chosen)}`);
-  return chosen;
-}
-
 // A query term can legitimately collide with an unrelated stock-photo category
 // (e.g. "isopropyl alcohol" pulling in drinking-alcohol photos because of the
 // word "alcohol"). The query itself is already stripped of that word unless
@@ -75,30 +67,44 @@ const offTopicAltKeywords = [
 ];
 const allowOffTopicAlt = Boolean(data.metadata?.beverage_topic);
 
-function isOffTopic(photo, altOf) {
-  const alt = (altOf(photo) || '').toLowerCase();
+function isOffTopic(photo) {
+  const alt = (photo.alt || '').toLowerCase();
   return offTopicAltKeywords.some((word) => alt.includes(word));
 }
 
-function pickOnTopicUnusedPhoto(candidates, idOf, altOf, keyPrefix) {
-  const onTopic = allowOffTopicAlt ? candidates : candidates.filter((candidate) => !isOffTopic(candidate, altOf));
-  const pool = onTopic.length ? onTopic : candidates;
-  return pickUnusedPhoto(pool, idOf, keyPrefix);
-}
-
-async function requestPexelsImage(query) {
-  const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=20&orientation=portrait`;
+async function fetchPexelsPage(query, page) {
+  const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=80&page=${page}&orientation=portrait`;
   const searchResponse = await fetch(searchUrl, {
     headers: { Authorization: pexelsApiKey },
     signal: AbortSignal.timeout(30_000)
   });
   if (!searchResponse.ok) throw new Error(`Pexels API returned HTTP ${searchResponse.status}`);
-
   const searchPayload = await searchResponse.json();
-  const photos = searchPayload.photos || [];
-  if (!photos.length) throw new Error(`No Pexels results for "${query}"`);
+  return searchPayload.photos || [];
+}
 
-  const photo = pickOnTopicUnusedPhoto(photos, (p) => p.id, (p) => p.alt, 'pexels');
+async function requestPexelsImage(query) {
+  // A narrow query (e.g. a single chemical name repeated across several
+  // slides) can exhaust its own on-topic, not-yet-used candidates within one
+  // page of results. Keep paging in that case instead of falling back to a
+  // photo already used elsewhere in this same card set.
+  let candidates = [];
+  let unused = [];
+  for (let page = 1; page <= 3; page += 1) {
+    const pagePhotos = await fetchPexelsPage(query, page);
+    if (!pagePhotos.length) break;
+    candidates = candidates.concat(pagePhotos);
+    const onTopic = allowOffTopicAlt ? candidates : candidates.filter((p) => !isOffTopic(p));
+    const pool = onTopic.length ? onTopic : candidates;
+    unused = pool.filter((p) => !usedPhotoIds.has(`pexels:${p.id}`));
+    if (unused.length) break;
+  }
+  if (!candidates.length) throw new Error(`No Pexels results for "${query}"`);
+  if (!unused.length) throw new Error(`No unused Pexels photo left for "${query}" after checking ${candidates.length} results`);
+
+  const photo = unused[Math.floor(Math.random() * unused.length)];
+  usedPhotoIds.add(`pexels:${photo.id}`);
+
   const imageUrl = photo.src.large2x || photo.src.large || photo.src.original;
   const imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(60_000) });
   if (!imageResponse.ok) throw new Error(`Failed to download Pexels photo (HTTP ${imageResponse.status})`);
