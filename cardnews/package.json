@@ -6,6 +6,7 @@
   "packageManager": "pnpm@10.15.1",
   "scripts": {
     "convert": "node scripts/md_to_cardnews.js",
+    "generate-images": "node scripts/generate_images.js",
     "render": "node scripts/render_cardnews.js",
     "build": "sh scripts/render.sh"
   },

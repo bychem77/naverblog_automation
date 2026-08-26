@@ -15,4 +15,5 @@ JSON_PATH="$OUTPUT_DIR/cardnews.json"
 
 mkdir -p "$OUTPUT_DIR"
 node "$SCRIPT_DIR/md_to_cardnews.js" "$INPUT_PATH" "$JSON_PATH"
+node "$SCRIPT_DIR/generate_images.js" "$JSON_PATH" "$OUTPUT_DIR"
 node "$SCRIPT_DIR/render_cardnews.js" "$JSON_PATH" "$OUTPUT_DIR"
