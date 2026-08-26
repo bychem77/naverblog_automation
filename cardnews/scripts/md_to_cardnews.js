@@ -150,9 +150,9 @@ const coverTags = (topicTags.length >= 3 ? topicTags : defaultTags).slice(0, 3);
 const slides = contentSections.slice(0, 4).map((section, index) => {
   const cleanTitle = stripEmoji(section.title);
   const sentences = sentencesFrom(section.lines);
-  const body = shorten(sentences.join(' '), 270) || '원고의 관련 내용을 확인해 카드 문구를 보완해 주세요.';
+  const body = shorten(sentences.join(' '), 80) || '원고의 관련 내용을 확인해 카드 문구를 보완해 주세요.';
   return {
-    title: shorten(cleanTitle, 38),
+    title: shorten(cleanTitle, 28),
     body,
     background: `../assets/backgrounds/bg_0${index + 2}.jpg`,
     image_prompt: `BYCHEM industrial editorial image about "${cleanTitle}". Show ${sentences.slice(0, 2).join(' ')}. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.`
@@ -169,7 +169,7 @@ const result = {
   },
   source_md: path.basename(inputPath),
   cover: {
-    title: shorten(title.replace(/\s*쉽게 알아보기\s*$/u, ''), 54),
+    title: shorten(title.replace(/\s*쉽게 알아보기\s*$/u, ''), 28),
     hashtags: coverTags,
     background: '../assets/backgrounds/bg_01.jpg',
     image_prompt: `Create a premium hero image for a Korean BYCHEM B2B card-news cover about "${title}". Visually express the specific subject using realistic industrial, laboratory, material, or technology photography. Clean professional mood, strong single focal point, 4:5 portrait composition, leave the lower 40 percent calm enough for a large Korean title, no text, no logo, no watermark, no identifiable company or product, no hazardous or sensational scene.`
