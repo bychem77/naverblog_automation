@@ -97,7 +97,11 @@ const genericStockQueries = [
   'chemical process technology',
   'precision engineering workshop',
   'scientific research laboratory',
-  'industrial factory technology'
+  'industrial factory technology',
+  'clean room manufacturing',
+  'quality control testing lab',
+  'raw material sample analysis',
+  'industrial supply chain logistics'
 ];
 
 function stockQueryFrom(title, expansions, index) {

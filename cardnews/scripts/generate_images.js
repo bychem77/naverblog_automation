@@ -59,10 +59,18 @@ function findManualImage(directory, stem) {
   return null;
 }
 
-const usedPexelsPhotoIds = new Set();
+const usedPhotoIds = new Set();
+
+function pickUnusedPhoto(candidates, idOf, keyPrefix) {
+  const unused = candidates.filter((candidate) => !usedPhotoIds.has(`${keyPrefix}:${idOf(candidate)}`));
+  const pool = unused.length ? unused : candidates;
+  const chosen = pool[Math.floor(Math.random() * pool.length)];
+  usedPhotoIds.add(`${keyPrefix}:${idOf(chosen)}`);
+  return chosen;
+}
 
 async function requestPexelsImage(query) {
-  const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=10&orientation=portrait`;
+  const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=20&orientation=portrait`;
   const searchResponse = await fetch(searchUrl, {
     headers: { Authorization: pexelsApiKey },
     signal: AbortSignal.timeout(30_000)
@@ -73,9 +81,7 @@ async function requestPexelsImage(query) {
   const photos = searchPayload.photos || [];
   if (!photos.length) throw new Error(`No Pexels results for "${query}"`);
 
-  const photo = photos.find((candidate) => !usedPexelsPhotoIds.has(candidate.id)) || photos[0];
-  usedPexelsPhotoIds.add(photo.id);
-
+  const photo = pickUnusedPhoto(photos, (p) => p.id, 'pexels');
   const imageUrl = photo.src.large2x || photo.src.large || photo.src.original;
   const imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(60_000) });
   if (!imageResponse.ok) throw new Error(`Failed to download Pexels photo (HTTP ${imageResponse.status})`);

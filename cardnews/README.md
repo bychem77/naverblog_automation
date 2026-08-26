@@ -13,7 +13,7 @@ Markdown 원고를 카드뉴스 JSON으로 정리하고, BYCHEM 전용 HTML/CSS 
 이미지는 다음 순서로 선택합니다.
 
 1. `cardnews/assets/manual/원고파일명/`에 올린 수동 이미지
-2. `PEXELS_API_KEY`가 설정된 경우 Pexels 무료 스톡 사진(제목의 영문 키워드로 검색)
+2. `PEXELS_API_KEY`가 설정된 경우 Pexels 무료 스톡 사진(제목의 영문 키워드로 검색). 상위 후보군 중 무작위로 고르고, 이미 쓴 사진은 다시 고르지 않습니다.
 3. `OPENAI_API_KEY`가 설정된 경우 OpenAI API 생성 이미지
 4. 기존 임시 배경
 
