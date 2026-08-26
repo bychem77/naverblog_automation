@@ -13,7 +13,6 @@ const jsonPath = path.resolve(jsonArg);
 const outputDir = path.resolve(outputArg);
 const imageDir = path.join(outputDir, 'images');
 const templateDir = path.resolve(__dirname, '../templates');
-const manualRoot = path.resolve(process.env.CARDNEWS_MANUAL_IMAGE_ROOT || path.resolve(__dirname, '../assets/manual'));
 const apiKey = process.env.OPENAI_API_KEY?.trim();
 const model = process.env.OPENAI_IMAGE_MODEL?.trim() || 'gpt-image-2';
 const quality = process.env.OPENAI_IMAGE_QUALITY?.trim() || 'medium';
@@ -49,14 +48,6 @@ function sleep(milliseconds) {
 function templateRelative(filePath) {
   const relative = path.relative(templateDir, filePath).split(path.sep).join('/');
   return relative.startsWith('.') ? relative : `./${relative}`;
-}
-
-function findManualImage(directory, stem) {
-  for (const extension of ['.png', '.jpg', '.jpeg', '.webp']) {
-    const candidate = path.join(directory, `${stem}${extension}`);
-    if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
-  }
-  return null;
 }
 
 const usedPhotoIds = new Set();
@@ -146,9 +137,6 @@ async function generate(job) {
 }
 
 async function main() {
-  const sourceName = path.basename(data.source_md || path.basename(jsonPath), path.extname(data.source_md || jsonPath));
-  const manualDir = path.join(manualRoot, sourceName);
-
   const jobs = [
     {
       label: 'cover',
@@ -156,7 +144,6 @@ async function main() {
       prompt: data.cover.image_prompt,
       query: data.cover.image_query || 'industrial laboratory technology',
       direction: 'Use one strong topic-specific hero subject and a premium, clean composition.',
-      manualStem: 'cover',
       apiFilePath: path.join(imageDir, 'cover.png')
     },
     ...data.slides.map((slide, index) => ({
@@ -165,42 +152,27 @@ async function main() {
       prompt: slide.image_prompt,
       query: slide.image_query || 'industrial laboratory technology',
       direction: variations[index % variations.length],
-      manualStem: `content_${String(index + 1).padStart(2, '0')}`,
       apiFilePath: path.join(imageDir, `content_${String(index + 1).padStart(2, '0')}.png`)
     }))
   ];
 
-  let manualCount = 0;
-  const pending = [];
-  for (const job of jobs) {
-    const manualPath = findManualImage(manualDir, job.manualStem);
-    if (manualPath) {
-      job.card.background = templateRelative(manualPath);
-      manualCount += 1;
-      console.log(`Using manual image ${path.basename(manualPath)}`);
-    } else {
-      pending.push(job);
-    }
-  }
-
   const apiResults = [];
-  if ((pexelsApiKey || apiKey) && pending.length) {
+  if (pexelsApiKey || apiKey) {
     fs.mkdirSync(imageDir, { recursive: true });
-    for (const job of pending) apiResults.push(await generate(job));
-  } else if (pending.length) {
-    console.log('Neither PEXELS_API_KEY nor OPENAI_API_KEY is configured; missing manual images will use placeholder backgrounds.');
+    for (const job of jobs) apiResults.push(await generate(job));
+  } else {
+    console.log('Neither PEXELS_API_KEY nor OPENAI_API_KEY is configured; all pages will use placeholder backgrounds.');
   }
 
   const pexelsCount = apiResults.filter((result) => result === 'pexels').length;
   const openaiCount = apiResults.filter((result) => result === 'openai').length;
-  const placeholderCount = jobs.length - manualCount - pexelsCount - openaiCount;
+  const placeholderCount = jobs.length - pexelsCount - openaiCount;
 
   data.outro.background = data.cover.background;
   data.outro.same_background_as = 'cover';
   data.metadata = {
     ...data.metadata,
     image_sources: {
-      manual: manualCount,
       pexels: pexelsCount,
       openai: openaiCount,
       placeholders: placeholderCount,
@@ -212,7 +184,7 @@ async function main() {
   };
 
   fs.writeFileSync(jsonPath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
-  console.log(`Image preparation complete: ${manualCount} manual, ${pexelsCount} Pexels, ${openaiCount} OpenAI, ${placeholderCount} placeholder.`);
+  console.log(`Image preparation complete: ${pexelsCount} Pexels, ${openaiCount} OpenAI, ${placeholderCount} placeholder.`);
 }
 
 main().catch((error) => {

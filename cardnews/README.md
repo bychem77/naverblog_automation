@@ -12,10 +12,9 @@ Markdown 원고를 카드뉴스 JSON으로 정리하고, BYCHEM 전용 HTML/CSS 
 
 이미지는 다음 순서로 선택합니다.
 
-1. `cardnews/assets/manual/원고파일명/`에 올린 수동 이미지
-2. `PEXELS_API_KEY`가 설정된 경우 Pexels 무료 스톡 사진(제목의 영문 키워드로 검색). 상위 후보군 중 무작위로 고르고, 이미 쓴 사진은 다시 고르지 않습니다.
-3. `OPENAI_API_KEY`가 설정된 경우 OpenAI API 생성 이미지
-4. 기존 임시 배경
+1. `PEXELS_API_KEY`가 설정된 경우 Pexels 무료 스톡 사진(제목의 영문 키워드로 검색). 상위 후보군 중 무작위로 고르고, 이미 쓴 사진은 다시 고르지 않습니다.
+2. `OPENAI_API_KEY`가 설정된 경우 OpenAI API 생성 이미지
+3. 기존 임시 배경
 
 본문은 글자 수를 맞추기 위해 자르거나 말줄임표를 붙이지 않으며, 페이지 수를 채우기 위한 임시 문구도 만들지 않습니다. 원고에는 최소 3개의 본문 소제목(`##`)이 필요하고, 6개를 넘으면 앞의 핵심 흐름과 마지막 결론을 사용합니다.
 
@@ -32,7 +31,7 @@ pnpm exec playwright install chromium
 pnpm build data/sample.md output/sample
 ```
 
-수동 이미지가 있으면 가장 먼저 사용합니다. API 키가 없거나 이미지 생성이 실패해도 나머지 페이지는 임시 배경으로 정상 렌더링됩니다.
+API 키가 없거나 이미지 생성이 실패해도 나머지 페이지는 임시 배경으로 정상 렌더링됩니다.
 
 결과는 `output/sample/`에 `cardnews.json`, 표지, 본문 3~6장, 아웃트로 PNG로 생성됩니다. 아웃트로 파일 번호는 본문 장수에 따라 자동으로 정해집니다.
 
@@ -52,18 +51,5 @@ pnpm render output/sample/cardnews.json output/sample
 ## GitHub Actions
 
 Actions 탭의 `BYCHEM Card News`에서 원고 경로를 입력해 수동 실행할 수 있습니다. `cardnews/data/*.md`가 변경되어 `main`에 반영되면 해당 폴더의 모든 원고도 자동 렌더링됩니다. 결과 PNG와 JSON은 실행 화면의 `bychem-cardnews-*` 아티팩트에서 내려받습니다.
-
-## 수동 이미지 사용법
-
-원고가 `cardnews/data/2026-08-26_IPA.md`라면 이미지를 다음 위치에 올립니다.
-
-```text
-cardnews/assets/manual/2026-08-26_IPA/cover.png
-cardnews/assets/manual/2026-08-26_IPA/content_01.png
-cardnews/assets/manual/2026-08-26_IPA/content_02.png
-...
-```
-
-`cover`는 표지와 아웃트로에 함께 사용합니다. 본문은 `content_01`부터 원고의 소제목 순서대로 연결됩니다. PNG, JPG, JPEG, WEBP를 지원하며 권장 크기는 1080×1350px입니다. 일부 이미지만 있어도 나머지는 다음 우선순위의 배경으로 자동 보완됩니다.
 
 API 키와 토큰은 저장소에 커밋하지 않습니다.
