@@ -14,16 +14,16 @@ body { font-family: 'Pretendard', 'Noto Sans KR', 'Noto Sans CJK KR', Arial, san
 .overlay { position: absolute; inset: 0; background: rgba(0,0,0,.38); }
 .overlay-content { background: linear-gradient(to bottom, rgba(0,0,0,.18) 0%, rgba(0,0,0,.30) 55%, rgba(0,0,0,.66) 100%); }
 .overlay-cover { background: linear-gradient(to bottom, rgba(0,0,0,.18) 0%, rgba(0,0,0,.28) 48%, rgba(0,0,0,.56) 72%, rgba(0,79,153,.82) 88%, rgba(0,114,206,1) 100%); }
-.brand-line { position: absolute; top: 62px; left: 68px; font-size: 52px; font-weight: 600; letter-spacing: -.9px; z-index: 3; white-space: pre; }
+.brand-line { position: absolute; top: 62px; left: 68px; font-size: 36.4px; font-weight: 600; letter-spacing: -.63px; z-index: 3; white-space: pre; }
 .logo { position: absolute; right: 48px; bottom: 52px; width: 118px; height: auto; z-index: 4; opacity: .98; }
 .logo-watermark { width: 92px; right: 54px; bottom: 50px; opacity: .28; }
 .cover-copy { position: absolute; left: 106px; right: 82px; bottom: 206px; z-index: 4; }
-.cover-title { max-width: 870px; margin: 0 0 42px; color: #fff; font-size: 136px; font-weight: 800; line-height: 1.13; letter-spacing: -5.8px; word-break: keep-all; }
+.cover-title { max-width: 870px; margin: 0 0 42px; color: #fff; font-size: 95.2px; font-weight: 800; line-height: 1.13; letter-spacing: -4.06px; word-break: keep-all; }
 .tags { display: flex; flex-wrap: wrap; gap: 18px; }
-.tag { padding: 18px 28px 20px; border-radius: 999px; color: #111; background: #fff; font-size: 52px; font-weight: 650; line-height: 1; }
+.tag { padding: 15px 24px 17px; border-radius: 999px; color: #111; background: #fff; font-size: 36.4px; font-weight: 650; line-height: 1; }
 .content-copy { position: absolute; left: 108px; right: 98px; bottom: 174px; z-index: 4; }
-.content-title { margin: 0 0 38px; color: #fff; font-size: 100px; font-weight: 800; line-height: 1.16; letter-spacing: -4.4px; word-break: keep-all; }
-.content-body { margin: 0; color: #fff; font-size: 54px; font-weight: 400; line-height: 1.38; letter-spacing: -2.1px; word-break: keep-all; }
+.content-title { margin: 0 0 38px; color: #fff; font-size: 70px; font-weight: 800; line-height: 1.16; letter-spacing: -3.08px; word-break: keep-all; }
+.content-body { margin: 0; color: #fff; font-size: 37.8px; font-weight: 400; line-height: 1.38; letter-spacing: -1.47px; word-break: keep-all; }
 .outro-center { position: absolute; inset: 0; z-index: 4; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: translateY(-20px); }
 .outro-center .logo-center { width: 128px; margin-bottom: 26px; }
-.outro-notice { max-width: 880px; font-size: 40px; font-weight: 700; line-height: 1.4; letter-spacing: -1.4px; text-align: center; word-break: keep-all; }
+.outro-notice { max-width: 880px; font-size: 28px; font-weight: 700; line-height: 1.4; letter-spacing: -.98px; text-align: center; word-break: keep-all; }
