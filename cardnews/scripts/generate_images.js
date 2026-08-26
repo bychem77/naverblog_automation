@@ -2,6 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const sharp = require('sharp');
 
 const [, , jsonArg, outputArg] = process.argv;
 if (!jsonArg || !outputArg) {
@@ -13,6 +14,7 @@ const jsonPath = path.resolve(jsonArg);
 const outputDir = path.resolve(outputArg);
 const imageDir = path.join(outputDir, 'images');
 const templateDir = path.resolve(__dirname, '../templates');
+const approvedRoot = path.resolve(process.env.CARDNEWS_APPROVED_IMAGE_ROOT || path.resolve(__dirname, '../assets/approved'));
 const apiKey = process.env.OPENAI_API_KEY?.trim();
 const model = process.env.OPENAI_IMAGE_MODEL?.trim() || 'gpt-image-2';
 const quality = process.env.OPENAI_IMAGE_QUALITY?.trim() || 'medium';
@@ -48,6 +50,36 @@ function sleep(milliseconds) {
 function templateRelative(filePath) {
   const relative = path.relative(templateDir, filePath).split(path.sep).join('/');
   return relative.startsWith('.') ? relative : `./${relative}`;
+}
+
+function findApprovedImage(directory, stem) {
+  for (const extension of ['.png', '.jpg', '.jpeg', '.webp']) {
+    const candidate = path.join(directory, `${stem}${extension}`);
+    if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
+  }
+  return null;
+}
+
+function readApprovedSources(directory) {
+  const manifestPath = path.join(directory, 'sources.json');
+  if (!fs.existsSync(manifestPath)) return {};
+
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  if (!manifest || Array.isArray(manifest) || typeof manifest !== 'object') {
+    throw new Error(`${manifestPath} must contain a JSON object`);
+  }
+  return manifest;
+}
+
+async function enhancePexelsImage(bytes) {
+  return sharp(bytes)
+    .rotate()
+    .resize(1080, 1350, { fit: 'cover', position: 'attention' })
+    .normalize({ lower: 1, upper: 99 })
+    .modulate({ brightness: 1.03, saturation: 0.95 })
+    .sharpen({ sigma: 0.7 })
+    .png({ compressionLevel: 9 })
+    .toBuffer();
 }
 
 const usedPhotoIds = new Set();
@@ -108,15 +140,17 @@ async function requestPexelsImage(query) {
   const imageUrl = photo.src.large2x || photo.src.large || photo.src.original;
   const imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(60_000) });
   if (!imageResponse.ok) throw new Error(`Failed to download Pexels photo (HTTP ${imageResponse.status})`);
+  const originalBytes = Buffer.from(await imageResponse.arrayBuffer());
   return {
-    bytes: Buffer.from(await imageResponse.arrayBuffer()),
+    bytes: await enhancePexelsImage(originalBytes),
     credit: {
       photo_id: photo.id,
       photographer: photo.photographer,
       photographer_url: photo.photographer_url,
       photo_url: photo.url,
       alt: photo.alt,
-      query
+      query,
+      enhancement: '1080x1350 attention crop, auto-level, color balance, sharpen'
     }
   };
 }
@@ -183,6 +217,10 @@ async function generate(job) {
 }
 
 async function main() {
+  const sourceName = path.basename(data.source_md || path.basename(jsonPath), path.extname(data.source_md || jsonPath));
+  const approvedDir = path.join(approvedRoot, sourceName);
+  const approvedSources = readApprovedSources(approvedDir);
+
   const jobs = [
     {
       label: 'cover',
@@ -190,6 +228,7 @@ async function main() {
       prompt: data.cover.image_prompt,
       query: data.cover.image_query || 'industrial laboratory technology',
       direction: 'Use one strong topic-specific hero subject and a premium, clean composition.',
+      approvedStem: 'cover',
       apiFilePath: path.join(imageDir, 'cover.png')
     },
     ...data.slides.map((slide, index) => ({
@@ -198,36 +237,67 @@ async function main() {
       prompt: slide.image_prompt,
       query: slide.image_query || 'industrial laboratory technology',
       direction: variations[index % variations.length],
+      approvedStem: `content_${String(index + 1).padStart(2, '0')}`,
       apiFilePath: path.join(imageDir, `content_${String(index + 1).padStart(2, '0')}.png`)
     }))
   ];
 
-  const apiResults = [];
-  if (pexelsApiKey || apiKey) {
-    fs.mkdirSync(imageDir, { recursive: true });
-    for (const job of jobs) apiResults.push(await generate(job));
-  } else {
-    console.log('Neither PEXELS_API_KEY nor OPENAI_API_KEY is configured; all pages will use placeholder backgrounds.');
+  const results = [];
+  const pending = [];
+  fs.mkdirSync(imageDir, { recursive: true });
+  for (const job of jobs) {
+    const approvedPath = findApprovedImage(approvedDir, job.approvedStem);
+    if (!approvedPath) {
+      pending.push(job);
+      continue;
+    }
+
+    const extension = path.extname(approvedPath).toLowerCase();
+    const copiedPath = path.join(imageDir, `${job.approvedStem}${extension}`);
+    fs.copyFileSync(approvedPath, copiedPath);
+    job.card.background = templateRelative(copiedPath);
+
+    const source = approvedSources[job.approvedStem] || {};
+    if (source.source === 'pexels') {
+      pexelsCredits.push({ card: job.label, approved: true, ...source });
+    }
+    results.push({ provider: 'approved', source: source.source || 'unspecified' });
+    console.log(`Using approved image ${path.basename(approvedPath)} for ${job.label}`);
   }
 
-  const pexelsCount = apiResults.filter((result) => result === 'pexels').length;
-  const openaiCount = apiResults.filter((result) => result === 'openai').length;
-  const placeholderCount = jobs.length - pexelsCount - openaiCount;
+  if ((pexelsApiKey || apiKey) && pending.length) {
+    fs.mkdirSync(imageDir, { recursive: true });
+    for (const job of pending) results.push({ provider: await generate(job) });
+  } else if (pending.length) {
+    console.log('Neither PEXELS_API_KEY nor OPENAI_API_KEY is configured; pages without approved images will use placeholder backgrounds.');
+  }
+
+  const approvedCount = results.filter((result) => result.provider === 'approved').length;
+  const pexelsCount = results.filter((result) => result.provider === 'pexels').length;
+  const openaiCount = results.filter((result) => result.provider === 'openai').length;
+  const approvedPexelsCount = results.filter((result) => result.provider === 'approved' && result.source === 'pexels').length;
+  const approvedOpenaiCount = results.filter((result) => result.provider === 'approved' && result.source === 'openai').length;
+  const placeholderCount = jobs.length - approvedCount - pexelsCount - openaiCount;
+  const usesPexels = pexelsCount + approvedPexelsCount > 0;
+  const usesOpenai = openaiCount + approvedOpenaiCount > 0;
 
   data.outro.background = data.cover.background;
   data.outro.same_background_as = 'cover';
-  if (pexelsCount && openaiCount) {
+  if (usesPexels && usesOpenai) {
     data.outro.notice = '* 본 콘텐츠에는 Pexels 제공 사진과 내용의 이해를 돕기 위한 AI 생성 이미지가 사용되었습니다.';
-  } else if (pexelsCount) {
+  } else if (usesPexels) {
     data.outro.notice = '* 본 콘텐츠에는 Pexels 제공 사진이 사용되었습니다.';
-  } else if (openaiCount) {
+  } else if (usesOpenai) {
     data.outro.notice = '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.';
+  } else if (approvedCount) {
+    data.outro.notice = '* 본 콘텐츠에는 담당자 검수를 완료한 확정 이미지가 사용되었습니다.';
   } else {
     data.outro.notice = '* 본 콘텐츠의 이미지는 내용의 이해를 돕기 위한 자료입니다.';
   }
   data.metadata = {
     ...data.metadata,
     image_sources: {
+      approved: approvedCount,
       pexels: pexelsCount,
       openai: openaiCount,
       placeholders: placeholderCount,
@@ -236,11 +306,16 @@ async function main() {
       size,
       quality
     },
+    approved_source_attribution: {
+      pexels: approvedPexelsCount,
+      openai: approvedOpenaiCount,
+      unspecified: approvedCount - approvedPexelsCount - approvedOpenaiCount
+    },
     ...(pexelsCredits.length ? { pexels_credits: pexelsCredits } : {})
   };
 
   fs.writeFileSync(jsonPath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
-  console.log(`Image preparation complete: ${pexelsCount} Pexels, ${openaiCount} OpenAI, ${placeholderCount} placeholder.`);
+  console.log(`Image preparation complete: ${approvedCount} approved, ${pexelsCount} enhanced Pexels, ${openaiCount} OpenAI, ${placeholderCount} placeholder.`);
 }
 
 main().catch((error) => {
