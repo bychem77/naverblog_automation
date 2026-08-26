@@ -202,7 +202,7 @@ const result = {
   },
   slides,
   outro: {
-    notice: '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.',
+    notice: '* 본 콘텐츠의 이미지는 내용의 이해를 돕기 위한 자료입니다.',
     background: '../assets/backgrounds/bg_01.jpg',
     same_background_as: 'cover',
     image_prompt: 'Reuse the exact same generated image file as cover.background. Do not generate a variation.'

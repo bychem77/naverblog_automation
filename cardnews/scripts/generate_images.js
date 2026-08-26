@@ -51,6 +51,7 @@ function templateRelative(filePath) {
 }
 
 const usedPhotoIds = new Set();
+const pexelsCredits = [];
 
 function pickUnusedPhoto(candidates, idOf, keyPrefix) {
   const unused = candidates.filter((candidate) => !usedPhotoIds.has(`${keyPrefix}:${idOf(candidate)}`));
@@ -76,7 +77,17 @@ async function requestPexelsImage(query) {
   const imageUrl = photo.src.large2x || photo.src.large || photo.src.original;
   const imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(60_000) });
   if (!imageResponse.ok) throw new Error(`Failed to download Pexels photo (HTTP ${imageResponse.status})`);
-  return Buffer.from(await imageResponse.arrayBuffer());
+  return {
+    bytes: Buffer.from(await imageResponse.arrayBuffer()),
+    credit: {
+      photo_id: photo.id,
+      photographer: photo.photographer,
+      photographer_url: photo.photographer_url,
+      photo_url: photo.url,
+      alt: photo.alt,
+      query
+    }
+  };
 }
 
 async function requestImage(prompt) {
@@ -122,9 +133,13 @@ async function generate(job) {
   let lastError;
   for (const provider of providers) {
     try {
-      const bytes = await provider.fetchBytes();
+      const result = await provider.fetchBytes();
+      const bytes = Buffer.isBuffer(result) ? result : result.bytes;
       fs.writeFileSync(job.apiFilePath, bytes, { mode: 0o600 });
       job.card.background = templateRelative(job.apiFilePath);
+      if (provider.name === 'pexels' && result.credit) {
+        pexelsCredits.push({ card: job.label, ...result.credit });
+      }
       console.log(`Generated ${path.basename(job.apiFilePath)} via ${provider.name}`);
       return provider.name;
     } catch (error) {
@@ -170,6 +185,15 @@ async function main() {
 
   data.outro.background = data.cover.background;
   data.outro.same_background_as = 'cover';
+  if (pexelsCount && openaiCount) {
+    data.outro.notice = '* 본 콘텐츠에는 Pexels 제공 사진과 내용의 이해를 돕기 위한 AI 생성 이미지가 사용되었습니다.';
+  } else if (pexelsCount) {
+    data.outro.notice = '* 본 콘텐츠에는 Pexels 제공 사진이 사용되었습니다.';
+  } else if (openaiCount) {
+    data.outro.notice = '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.';
+  } else {
+    data.outro.notice = '* 본 콘텐츠의 이미지는 내용의 이해를 돕기 위한 자료입니다.';
+  }
   data.metadata = {
     ...data.metadata,
     image_sources: {
@@ -180,7 +204,8 @@ async function main() {
       model,
       size,
       quality
-    }
+    },
+    ...(pexelsCredits.length ? { pexels_credits: pexelsCredits } : {})
   };
 
   fs.writeFileSync(jsonPath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
