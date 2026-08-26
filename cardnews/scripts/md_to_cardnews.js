@@ -71,6 +71,26 @@ function shorten(text, max = 94) {
   return `${cut.slice(0, boundary > max * 0.55 ? boundary : max - 1).trim()}…`;
 }
 
+function completeSentence(text = '') {
+  const value = cleanInline(text);
+  if (!value || /[.!?。]$/.test(value)) return value;
+  return `${value}.`;
+}
+
+function summarize(sentences, max = 120) {
+  const candidates = sentences.map(completeSentence).filter(Boolean);
+  if (!candidates.length) return '';
+
+  // Card bodies should read as finished copy, never as character-limited fragments.
+  // Keep one complete sentence even when it exceeds the preferred visual length,
+  // then add a second only when both still fit comfortably on the card.
+  const summary = [candidates[0]];
+  if (candidates[1] && `${candidates[0]} ${candidates[1]}`.length <= max) {
+    summary.push(candidates[1]);
+  }
+  return summary.join(' ');
+}
+
 function parseTags(source) {
   const tagSection = source.match(/(?:태그 입력란|네이버 태그 편집란 입력)[\s\S]*?(?=\n##\s|$)/i)?.[0] || '';
   return [...new Set((tagSection.match(/#[\p{L}\p{N}_-]+/gu) || []))].slice(0, 12);
@@ -150,7 +170,7 @@ const coverTags = (topicTags.length >= 3 ? topicTags : defaultTags).slice(0, 3);
 const slides = contentSections.slice(0, 4).map((section, index) => {
   const cleanTitle = stripEmoji(section.title);
   const sentences = sentencesFrom(section.lines);
-  const body = shorten(sentences.join(' '), 80) || '원고의 관련 내용을 확인해 카드 문구를 보완해 주세요.';
+  const body = summarize(sentences) || '원고의 관련 내용을 확인해 카드 문구를 보완해 주세요.';
   return {
     title: shorten(cleanTitle, 28),
     body,
