@@ -30,7 +30,7 @@ cardnews/            Markdown 기반 BYCHEM 카드뉴스 JSON·PNG·AI 이미지
 
 ## 카드뉴스 자동화
 
-`cardnews/data/`에 Markdown 원고를 넣으면 표지, 본문 3~6장, 아웃트로로 구성된 JSON과 1080×1350 PNG를 만들 수 있습니다. 회사 OpenAI API 키가 GitHub Secret에 등록돼 있으면 주제별 배경 이미지도 자동 생성합니다. 로컬 실행, GitHub Actions와 회사 계정 인수인계 방법은 [`cardnews/README.md`](cardnews/README.md)를 참고하세요.
+`cardnews/data/`에 Markdown 원고를 넣으면 표지, 본문 3~6장, 아웃트로로 구성된 JSON과 1080×1350 PNG를 만들 수 있습니다. 수동 이미지와 선택적인 API 이미지를 지원합니다. 로컬 실행과 GitHub Actions 사용법은 [`cardnews/README.md`](cardnews/README.md)를 참고하세요.
 
 ## 중요한 보안 원칙
 

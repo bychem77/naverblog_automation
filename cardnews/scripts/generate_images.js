@@ -9,16 +9,12 @@ if (!jsonArg || !outputArg) {
   process.exit(1);
 }
 
-const apiKey = process.env.OPENAI_API_KEY?.trim();
-if (!apiKey) {
-  console.log('OPENAI_API_KEY is not configured; using the bundled placeholder backgrounds.');
-  process.exit(0);
-}
-
 const jsonPath = path.resolve(jsonArg);
 const outputDir = path.resolve(outputArg);
 const imageDir = path.join(outputDir, 'images');
 const templateDir = path.resolve(__dirname, '../templates');
+const manualRoot = path.resolve(process.env.CARDNEWS_MANUAL_IMAGE_ROOT || path.resolve(__dirname, '../assets/manual'));
+const apiKey = process.env.OPENAI_API_KEY?.trim();
 const model = process.env.OPENAI_IMAGE_MODEL?.trim() || 'gpt-image-2';
 const quality = process.env.OPENAI_IMAGE_QUALITY?.trim() || 'medium';
 const size = process.env.OPENAI_IMAGE_SIZE?.trim() || '1024x1536';
@@ -52,6 +48,14 @@ function sleep(milliseconds) {
 function templateRelative(filePath) {
   const relative = path.relative(templateDir, filePath).split(path.sep).join('/');
   return relative.startsWith('.') ? relative : `./${relative}`;
+}
+
+function findManualImage(directory, stem) {
+  for (const extension of ['.png', '.jpg', '.jpeg', '.webp']) {
+    const candidate = path.join(directory, `${stem}${extension}`);
+    if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
+  }
+  return null;
 }
 
 async function requestImage(prompt) {
@@ -92,9 +96,9 @@ async function requestImage(prompt) {
 async function generate(job) {
   try {
     const bytes = await requestImage(`${sharedDirection} ${job.direction} ${job.prompt}`);
-    fs.writeFileSync(job.filePath, bytes, { mode: 0o600 });
-    job.card.background = templateRelative(job.filePath);
-    console.log(`Generated ${path.basename(job.filePath)}`);
+    fs.writeFileSync(job.apiFilePath, bytes, { mode: 0o600 });
+    job.card.background = templateRelative(job.apiFilePath);
+    console.log(`Generated ${path.basename(job.apiFilePath)}`);
     return true;
   } catch (error) {
     console.warn(`Image generation failed for ${job.label}; keeping its placeholder background. ${error.message}`);
@@ -103,7 +107,8 @@ async function generate(job) {
 }
 
 async function main() {
-  fs.mkdirSync(imageDir, { recursive: true });
+  const sourceName = path.basename(data.source_md || path.basename(jsonPath), path.extname(data.source_md || jsonPath));
+  const manualDir = path.join(manualRoot, sourceName);
 
   const jobs = [
     {
@@ -111,36 +116,60 @@ async function main() {
       card: data.cover,
       prompt: data.cover.image_prompt,
       direction: 'Use one strong topic-specific hero subject and a premium, clean composition.',
-      filePath: path.join(imageDir, 'cover.png')
+      manualStem: 'cover',
+      apiFilePath: path.join(imageDir, 'cover.png')
     },
     ...data.slides.map((slide, index) => ({
       label: `content ${index + 1}`,
       card: slide,
       prompt: slide.image_prompt,
       direction: variations[index % variations.length],
-      filePath: path.join(imageDir, `content_${String(index + 1).padStart(2, '0')}.png`)
+      manualStem: `content_${String(index + 1).padStart(2, '0')}`,
+      apiFilePath: path.join(imageDir, `content_${String(index + 1).padStart(2, '0')}.png`)
     }))
   ];
 
-  const results = [];
-  for (const job of jobs) results.push(await generate(job));
+  let manualCount = 0;
+  const pending = [];
+  for (const job of jobs) {
+    const manualPath = findManualImage(manualDir, job.manualStem);
+    if (manualPath) {
+      job.card.background = templateRelative(manualPath);
+      manualCount += 1;
+      console.log(`Using manual image ${path.basename(manualPath)}`);
+    } else {
+      pending.push(job);
+    }
+  }
+
+  const apiResults = [];
+  if (apiKey && pending.length) {
+    fs.mkdirSync(imageDir, { recursive: true });
+    for (const job of pending) apiResults.push(await generate(job));
+  } else if (pending.length) {
+    console.log('OPENAI_API_KEY is not configured; missing manual images will use placeholder backgrounds.');
+  }
+
+  const apiCount = apiResults.filter(Boolean).length;
+  const placeholderCount = jobs.length - manualCount - apiCount;
 
   data.outro.background = data.cover.background;
   data.outro.same_background_as = 'cover';
   data.metadata = {
     ...data.metadata,
-    image_generation: {
-      provider: 'OpenAI',
+    image_sources: {
+      manual: manualCount,
+      openai: apiCount,
+      placeholders: placeholderCount,
+      total: jobs.length,
       model,
       size,
-      quality,
-      generated: results.filter(Boolean).length,
-      placeholders: results.filter((value) => !value).length
+      quality
     }
   };
 
   fs.writeFileSync(jsonPath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
-  console.log(`Image preparation complete: ${results.filter(Boolean).length}/${jobs.length} generated.`);
+  console.log(`Image preparation complete: ${manualCount} manual, ${apiCount} OpenAI, ${placeholderCount} placeholder.`);
 }
 
 main().catch((error) => {
