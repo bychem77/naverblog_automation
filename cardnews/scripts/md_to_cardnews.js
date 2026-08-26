@@ -104,11 +104,17 @@ const genericStockQueries = [
   'industrial supply chain logistics'
 ];
 
-function stockQueryFrom(title, expansions, index) {
-  const latinTerms = title.match(/[A-Za-z][A-Za-z0-9+-]*/g) || [];
+// Only fall back to a generic descriptor when the manuscript itself gives us
+// nothing to search on. When it does, the query should be the manuscript's own
+// terms alone — appending a generic word like "industrial" lets that common
+// word dominate stock-photo relevance ranking and drowns out the real topic.
+function stockQueryFrom(text, expansions, index) {
+  // Strip parenthetical asides first so an acronym's own spelled-out form
+  // (already captured via `expansions`) isn't tokenized a second time.
+  const latinTerms = text.replace(/\([^)]*\)/g, ' ').match(/[A-Za-z][A-Za-z0-9+-]{1,}/g) || [];
   if (!latinTerms.length) return genericStockQueries[index % genericStockQueries.length];
   const expanded = [...new Set(latinTerms.map((term) => expansions.get(term.toUpperCase()) || term))];
-  return `${expanded.join(' ')} ${genericStockQueries[index % genericStockQueries.length]}`;
+  return expanded.slice(0, 6).join(' ');
 }
 
 function parseSections(source) {
@@ -140,6 +146,7 @@ const headings = parseSections(markdown);
 const explicitTitle = markdown.match(/^-\s*제목\s*:\s*`?([^\n`]+)/m)?.[1]?.trim();
 const rootCandidates = headings.filter((h) => h.level === 1 && !isMetaHeading(h.title));
 const title = cleanInline(explicitTitle || rootCandidates.at(-1)?.title || path.basename(inputPath, path.extname(inputPath)));
+const introText = sentencesFrom(rootCandidates.at(-1)?.lines || []).join(' ');
 
 let contentSections = headings.filter((section) => {
   if (section.level < 2 || section.level > 3 || isMetaHeading(section.title)) return false;
@@ -173,7 +180,7 @@ const slides = contentSections.map((section, index) => {
     body,
     background: `../assets/backgrounds/bg_0${(index % 4) + 2}.jpg`,
     image_prompt: `BYCHEM industrial editorial image about "${cleanTitle}". Show ${sentences.slice(0, 2).join(' ')}. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.`,
-    image_query: stockQueryFrom(cleanTitle, acronymExpansions, index + 1)
+    image_query: stockQueryFrom(`${cleanTitle} ${sentences.join(' ')}`, acronymExpansions, index + 1)
   };
 });
 
@@ -191,7 +198,7 @@ const result = {
     hashtags: coverTags,
     background: '../assets/backgrounds/bg_01.jpg',
     image_prompt: `Create a premium hero image for a Korean BYCHEM B2B card-news cover about "${title}". Visually express the specific subject using realistic industrial, laboratory, material, or technology photography. Clean professional mood, strong single focal point, 4:5 portrait composition, leave the lower 40 percent calm enough for a large Korean title, no text, no logo, no watermark, no identifiable company or product, no hazardous or sensational scene.`,
-    image_query: stockQueryFrom(title, acronymExpansions, 0)
+    image_query: stockQueryFrom(`${title} ${introText}`, acronymExpansions, 0)
   },
   slides,
   outro: {
