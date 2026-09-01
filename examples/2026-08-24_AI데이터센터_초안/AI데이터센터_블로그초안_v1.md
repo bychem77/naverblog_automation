@@ -172,38 +172,7 @@ AI 데이터센터가 뜨거워지는 이유는 고성능 장비가 많은 계�
 
 ---
 
-## F. 문장 단위 근거 연결표
-
-| 원고의 핵심 문장 | 근거 원자료 | 직접 연결 URL | 확인일 | 검수 상태 |
-|---|---|---|---|---|
-| 데이터센터는 서버·저장장치·네트워크 장비와 관련 설비가 모인 시설입니다. | IEA, `Energy demand from AI` | https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai | 2026-08-25 | 확인 완료 |
-| AI 확산으로 고성능 가속 서버 도입이 빨라지며 데이터센터 전력밀도가 높아지고 있습니다. | IEA, `Energy demand from AI` | https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai | 2026-08-25 | 확인 완료 |
-| 데이터센터 IT 장비에 공급된 전기에너지는 운전 과정에서 열에너지로 전환됩니다. | NREL, `Artificial Intelligence for Data Center` | https://www.nrel.gov/docs/fy21osti/79712.pdf | 2026-08-25 | 확인 완료 |
-| 서버는 현대 데이터센터 전력 수요의 평균 약 60%를 차지하며, 냉각 비중은 시설에 따라 약 7%에서 30% 초과까지 달라질 수 있습니다. | IEA, `Energy demand from AI` | https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai | 2026-08-25 | 범위와 조건 확인 완료 |
-| 액체냉각 유체는 처리수·글리콜계 용액·절연성 유체 등으로 구성될 수 있으며 CDU가 온도·압력·화학 조건을 관리합니다. | 미국 DOE/LBNL, `Best Practices Guide for Energy-Efficient Data Center Design` | https://www.osti.gov/servlets/purl/2417618 | 2026-08-25 | 확인 완료 |
-| 콜드플레이트는 칩 가까이에서 흐르는 액체로 열을 제거하고 액침냉각은 전자장비를 절연성 유체에 담그는 방식입니다. | 미국 DOE/LBNL, 같은 가이드 | https://www.osti.gov/servlets/purl/2417618 | 2026-08-25 | 확인 완료 |
-| 액체냉각과 공랭을 함께 사용하는 하이브리드 구성도 있습니다. | 미국 DOE/LBNL, 같은 가이드 | https://www.osti.gov/servlets/purl/2417618 | 2026-08-25 | 확인 완료 |
-| PUE는 전체 시설 에너지를 IT 장비 에너지로 나눈 값이며 데이터센터 전체 계산 효율을 직접 나타내지는 않습니다. | 미국 DOE/LBNL, `Best Practices Guide` | https://datacenters.lbl.gov/sites/default/files/2025-07/best-practice-guide-data-center-design.pdf | 2026-08-25 | 정의·한계 확인 완료 |
-| NREL은 직접 액체냉각으로 회수한 폐열을 사무공간과 실험실 난방에 활용한 사례를 소개합니다. | NREL, `Liquid Cooling for HPC` | https://docs.nrel.gov/docs/fy24osti/84492.pdf | 2026-08-25 | 사례 확인 완료 |
-| 열관리 소재의 평가 항목은 열경로와 냉각유체 조건에 근거한 일반 엔지니어링 해석입니다. | 위 DOE/LBNL 가이드 종합 | 위 공식 자료 종합 | 2026-08-25 | 특정 제품 주장 없이 편집적 종합 |
-
-### 참고자료
-
-- IEA, `Energy and AI`
-  https://www.iea.org/reports/energy-and-ai/
-- IEA, `Energy demand from AI`
-  https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai
-- U.S. DOE/LBNL, `Best Practices Guide for Energy-Efficient Data Center Design`
-  https://www.osti.gov/servlets/purl/2417618
-- NREL, `Liquid Cooling for HPC`
-  https://docs.nrel.gov/docs/fy24osti/84492.pdf
-- NREL, `Artificial Intelligence for Data Center`
-  https://www.nrel.gov/docs/fy21osti/79712.pdf
-- 자료 확인일: 2026-08-25
-
----
-
-## G. 이미지 제작 명세와 재현용 최종 프롬프트
+## F. 이미지 제작 명세와 재현용 최종 프롬프트
 
 ### 공통 제한
 

@@ -188,16 +188,3 @@ IPA가 전자·반도체 산업에서 널리 활용되는 이유는 분명해요
 - 이번 IPA 대표사진을 향후 `BYCHEM 솔루션` 대표사진 템플릿의 최초 기준안으로 사용하며, 담당자 승인 후 고정한다.
 
 ---
-
-## E. 사실·안전 근거 연결표
-
-| 원고 내용 | 공식 근거 | URL | 확인 상태 |
-|---|---|---|---|
-| IPA의 명칭, CAS 번호, 무색 액체, 물과의 혼화성, 휘발성·인화성 | CDC/NIOSH Pocket Guide, Isopropyl alcohol | https://www.cdc.gov/niosh/npg/npgd0359.html | 확인 완료 |
-| IPA의 화학식·물성·인화점과 폭발범위 | 미국 OSHA Chemical Data, Isopropyl Alcohol | https://www.osha.gov/chemicaldata/475 | 확인 완료 |
-| 반도체 웨이퍼는 오염 관리 때문에 자주 세정하며 IPA가 세정용 용제와 개발 후 린스에 사용됨 | 미국 OSHA, Semiconductor Device Fabrication | https://www.osha.gov/semiconductors/silicon/device-fabrication | 확인 완료 |
-| 반도체 제조시설에서 IPA가 챔버·작업대·부품 등의 세정에 사용됨 | 미국 NIST, Micron Semiconductor Manufacturing Project FEIS Appendix | https://www.nist.gov/system/files/documents/2025/11/07/2025_1105_MicronNY_FEIS_Appendix_H-J.pdf | 확인 완료 |
-| 전자부품 세정제는 재질을 손상하지 않아야 하며 IPA가 전자부품·조립품 세정에 사용됨 | 미국 FDA, Cleaning Solvents for Electronic Medical Devices | https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-technical-guides/evaluation-production-cleaning-processes-electronic-medical-devices-part-ii-cleaning-solvents | 확인 완료 |
-| 반도체 산업용 2-프로판올은 별도의 등급·시험 기준으로 관리됨 | SEMI C41, Specification and Guide for 2-Propanol | https://store-us.semi.org/products/c04100-semi-c41-specification-and-guide-for-2-propanol | 확인 완료 |
-| 세정용 용제의 순도가 웨이퍼 청정도와 수율에 영향을 줄 수 있음 | 미국 NIST, Semiconductor Cleaning Chemicals Metrology | https://www.nist.gov/system/files/documents/2026/02/12/646%20Analytical%20Chemistry%20Research%20Associate%20for%20Advancing%20Chemical%20Metrology%20for%20Semiconductor%20Cleaning%20Chemicals.pdf | 확인 완료 |
-| 국내 IPA 안전자료와 작업장 관리 참고 | 한국산업안전보건공단 화학물질정보 | https://msds.kosha.or.kr/MSDSInfo/mgr/msgReplaceChemList.do?pageIndex=33 | 확인 완료 |
