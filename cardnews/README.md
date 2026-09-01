@@ -13,8 +13,8 @@ Markdown 원고를 카드뉴스 JSON으로 정리하고, BYCHEM 전용 HTML/CSS 
 이미지는 다음 순서로 선택합니다.
 
 1. `cardnews/assets/approved/원고파일명/`에 저장한 검수 완료 이미지
-2. `PEXELS_API_KEY`가 설정된 경우 Pexels 무료 스톡 사진. 1080×1350으로 맞추고 명암, 색감, 선명도를 자동 보정합니다.
-3. `OPENAI_API_KEY`가 설정된 경우 OpenAI API 생성 이미지
+2. `OPENAI_API_KEY`가 설정된 경우 사내 OpenAI API 생성 이미지
+3. API 생성이 불가능하거나 실패하면 Pexels 무료 스톡 사진. 1080×1350으로 맞추고 명암, 색감, 선명도를 자동 보정합니다.
 4. 기존 임시 배경
 
 아웃트로의 이미지 고지문은 실제 결과에 맞춰 자동 변경됩니다. Pexels 사진을 사용하면 Pexels 제공 문구가 표시되고, OpenAI API로 생성하면 AI 생성 문구가 표시됩니다. 두 출처가 섞이면 두 가지를 함께 표시합니다. Pexels 사진가와 원본 링크는 결과 `cardnews.json`의 `metadata.pexels_credits`에 기록됩니다.
@@ -65,7 +65,7 @@ cardnews/assets/approved/2026-08-26_IPA/content_01.png
 cardnews/assets/approved/2026-08-26_IPA/content_02.png
 ```
 
-`cover`는 표지와 아웃트로에 함께 사용하며, 본문은 `content_01`부터 순서대로 연결됩니다. 일부 이미지만 확정해도 나머지는 Pexels부터 자동으로 채웁니다. Pexels 또는 OpenAI에서 만든 확정 이미지의 출처 표시는 같은 폴더의 `sources.json`에 기록합니다. 자세한 형식은 [`assets/approved/README.md`](assets/approved/README.md)를 참고합니다.
+`cover`는 표지와 아웃트로에 함께 사용하며, 본문은 `content_01`부터 순서대로 연결됩니다. 일부 이미지만 확정해도 나머지는 사내 OpenAI API부터 자동으로 채우고, API 생성이 실패한 페이지만 Pexels로 보완합니다. Pexels 또는 OpenAI에서 만든 확정 이미지의 출처 표시는 같은 폴더의 `sources.json`에 기록합니다. 자세한 형식은 [`assets/approved/README.md`](assets/approved/README.md)를 참고합니다.
 
 Actions 아티팩트를 검수할 때는 각 원고 폴더의 `images/`에 들어 있는 글자 없는 배경 이미지 중 확정본을 위 경로로 복사합니다. `01_cover.png`처럼 글자가 합성된 최종 카드 PNG가 아니라 `images/cover.png`, `images/content_01.png` 등을 사용합니다.
 

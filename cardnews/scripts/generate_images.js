@@ -192,8 +192,8 @@ async function requestImage(prompt) {
 
 async function generate(job) {
   const providers = [];
-  if (pexelsApiKey) providers.push({ name: 'pexels', fetchBytes: () => requestPexelsImage(job.query) });
   if (apiKey) providers.push({ name: 'openai', fetchBytes: () => requestImage(`${sharedDirection} ${job.direction} ${job.prompt}`) });
+  if (pexelsApiKey) providers.push({ name: 'pexels', fetchBytes: () => requestPexelsImage(job.query) });
 
   let lastError;
   for (const provider of providers) {
