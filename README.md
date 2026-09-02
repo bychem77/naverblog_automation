@@ -6,9 +6,10 @@
 
 1. [`prompts/BYCHEM_NAVERBLOG_MASTER_PROMPT.md`](prompts/BYCHEM_NAVERBLOG_MASTER_PROMPT.md)의 전체 내용을 AI의 시스템 지침 또는 프로젝트 지침에 넣습니다.
 2. 작업 요청은 [`templates/작업요청서.md`](templates/작업요청서.md)를 복사해 작성합니다.
-3. 캐릭터 이미지 생성에는 `assets/characters/`의 원본을 참조 이미지로 제공합니다.
-4. 결과물은 `examples/YYYY-MM-DD_주제_상태/`와 같은 구조로 저장합니다.
-5. 담당자 승인 전에는 네이버 블로그에 **비공개**로만 저장합니다.
+3. 바이켐 제품 내용과 관련 글감은 [`references/product_catalog/`](references/product_catalog/)의 카탈로그를 우선 참고합니다.
+4. 캐릭터 이미지 생성에는 `assets/characters/`의 원본을 참조 이미지로 제공합니다.
+5. 결과물은 `examples/YYYY-MM-DD_주제_상태/`와 같은 구조로 저장합니다.
+6. 담당자 승인 전에는 네이버 블로그에 **비공개**로만 저장합니다.
 
 ## 표준 진행 방식
 
@@ -23,6 +24,7 @@ assets/characters/   승인된 래미 캐릭터와 스타일 참고 이미지
 docs/                운영 규칙과 편집·검수 절차
 examples/            실제 원고·썸네일·본문 이미지 예시
 prompts/             다른 AI에 그대로 전달할 마스터·이미지 프롬프트
+references/          바이켐 제품 카탈로그 등 승인 참고자료
 scripts/             캘린더 등 자료 점검용 보조 스크립트
 templates/           월간 캘린더·작업 요청·원고 산출물 템플릿
 cardnews/            Markdown 기반 BYCHEM 카드뉴스 JSON·PNG·AI 이미지 자동화
