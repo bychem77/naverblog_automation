@@ -2,6 +2,8 @@
 
 바이켐 네이버 기업 블로그의 주제 기획, 내용 확인, 원고 작성, 이미지 제작, 담당자 승인, 비공개 게시까지 같은 기준으로 반복하기 위한 인수인계 저장소입니다.
 
+현재 운영 규칙의 단일 기준은 [`prompts/BYCHEM_NAVERBLOG_MASTER_PROMPT.md`](prompts/BYCHEM_NAVERBLOG_MASTER_PROMPT.md)입니다. 다른 프롬프트·매뉴얼·템플릿·예시와 내용이 다르면 마스터 프롬프트의 최신 버전을 따릅니다. 문서별 역할과 수정 순서는 [`docs/PROMPT_ARCHITECTURE.md`](docs/PROMPT_ARCHITECTURE.md)를 참고하세요.
+
 ## 빠른 시작
 
 1. [`prompts/BYCHEM_NAVERBLOG_MASTER_PROMPT.md`](prompts/BYCHEM_NAVERBLOG_MASTER_PROMPT.md)의 전체 내용을 AI의 시스템 지침 또는 프로젝트 지침에 넣습니다.

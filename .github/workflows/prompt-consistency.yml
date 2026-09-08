@@ -1,0 +1,31 @@
+name: BYCHEM Prompt Consistency
+
+on:
+  pull_request:
+    paths:
+      - "prompts/**"
+      - "docs/**"
+      - "templates/**"
+      - "scripts/check_prompt_consistency.sh"
+      - ".github/workflows/prompt-consistency.yml"
+  push:
+    branches: [main]
+    paths:
+      - "prompts/**"
+      - "docs/**"
+      - "templates/**"
+      - "scripts/check_prompt_consistency.sh"
+      - ".github/workflows/prompt-consistency.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Check active prompt rules
+        run: ./scripts/check_prompt_consistency.sh
