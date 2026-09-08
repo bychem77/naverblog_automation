@@ -9,9 +9,10 @@
 1. [`prompts/BYCHEM_NAVERBLOG_MASTER_PROMPT.md`](prompts/BYCHEM_NAVERBLOG_MASTER_PROMPT.md)의 전체 내용을 AI의 시스템 지침 또는 프로젝트 지침에 넣습니다.
 2. 작업 요청은 [`templates/작업요청서.md`](templates/작업요청서.md)를 복사해 작성합니다.
 3. 바이켐 제품 내용과 관련 글감은 [`references/product_catalog/`](references/product_catalog/)의 카탈로그를 우선 참고합니다.
-4. 캐릭터 이미지 생성에는 `assets/characters/`의 원본을 참조 이미지로 제공합니다.
-5. 결과물은 `examples/YYYY-MM-DD_주제_상태/`와 같은 구조로 저장합니다.
-6. 담당자 승인 전에는 네이버 블로그에 **비공개**로만 저장합니다.
+4. 순환자원·분리정제·금속 회수 관련 주제는 [`docs/순환자원_분리정제_콘텐츠백로그.md`](docs/순환자원_분리정제_콘텐츠백로그.md)를 참고합니다.
+5. 캐릭터 이미지 생성에는 `assets/characters/`의 원본을 참조 이미지로 제공합니다.
+6. 결과물은 `examples/YYYY-MM-DD_주제_상태/`와 같은 구조로 저장합니다.
+7. 담당자 승인 전에는 네이버 블로그에 **비공개**로만 저장합니다.
 
 ## 표준 진행 방식
 
