@@ -53,7 +53,19 @@ pnpm render output/sample/cardnews.json output/sample
 
 ## GitHub Actions
 
-Actions 탭의 `BYCHEM Card News`에서 원고 경로를 입력해 수동 실행할 수 있습니다. `cardnews/data/*.md`가 변경되어 `main`에 반영되면 해당 폴더의 모든 원고도 자동 렌더링됩니다. 결과 PNG와 JSON은 실행 화면의 `bychem-cardnews-*` 아티팩트에서 내려받습니다.
+Actions 탭의 `BYCHEM Card News`에서 원고 경로를 입력해 수동 실행할 수 있습니다.
+
+`main`에 반영된 푸시에서는 새로 추가되거나 수정된 `cardnews/data/*.md`만 자동 렌더링합니다. 이미 한 번 등록됐고 내용이 바뀌지 않은 카드뉴스 원고는 다시 만들지 않습니다.
+
+다음 항목이 바뀌면 전체 카드뉴스를 다시 렌더링합니다.
+
+- `cardnews/scripts/`
+- `cardnews/templates/`
+- `cardnews/assets/`
+- `cardnews/package.json`, `cardnews/pnpm-lock.yaml`
+- 카드뉴스 GitHub Actions 워크플로
+
+사용자가 재생성을 명시했거나 특정 원고만 다시 만들 필요가 있으면 Actions의 수동 실행에서 해당 원고 경로를 입력합니다. 결과 PNG와 JSON은 실행 화면의 `bychem-cardnews-*` 아티팩트에서 내려받습니다.
 
 ## 검수 완료 이미지 사용법
 

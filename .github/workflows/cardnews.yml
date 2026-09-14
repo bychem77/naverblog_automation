@@ -41,13 +41,74 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Determine changed card-news inputs
+        id: scope
+        if: github.event_name == 'push'
+        working-directory: ${{ github.workspace }}
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cardnews/.workflow
+          target_file="cardnews/.workflow/render_targets.txt"
+          : > "$target_file"
+
+          render_all=false
+          if [[ "$BEFORE_SHA" =~ ^0+$ ]] || ! git cat-file -e "$BEFORE_SHA^{commit}" 2>/dev/null; then
+            render_all=true
+          else
+            mapfile -d '' changed_files < <(
+              git diff --name-only --diff-filter=ACMR -z "$BEFORE_SHA" "$AFTER_SHA"
+            )
+
+            for file in "${changed_files[@]}"; do
+              case "$file" in
+                cardnews/scripts/*|cardnews/templates/*|cardnews/assets/*|cardnews/package.json|cardnews/pnpm-lock.yaml|.github/workflows/cardnews.yml)
+                  render_all=true
+                  break
+                  ;;
+              esac
+            done
+          fi
+
+          if [[ "$render_all" == true ]]; then
+            find cardnews/data -type f -name '*.md' ! -name 'README.md' ! -name 'sample.md' -print | sed 's#^cardnews/##' | sort -u > "$target_file"
+          else
+            for file in "${changed_files[@]}"; do
+              case "$file" in
+                cardnews/data/*.md)
+                  name=$(basename "$file")
+                  if [[ "$name" != "README.md" && "$name" != "sample.md" ]]; then
+                    printf '%s\n' "${file#cardnews/}" >> "$target_file"
+                  fi
+                  ;;
+              esac
+            done
+            sort -u -o "$target_file" "$target_file"
+          fi
+
+          if [[ -s "$target_file" ]]; then
+            echo "has_targets=true" >> "$GITHUB_OUTPUT"
+            echo "Card-news inputs to render:"
+            sed 's/^/- /' "$target_file"
+          else
+            echo "has_targets=false" >> "$GITHUB_OUTPUT"
+            echo "No new or modified card-news inputs; skipping render."
+          fi
 
       - name: Set up pnpm
+        if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
         uses: pnpm/action-setup@v6
         with:
           version: 10.15.1
 
       - name: Set up Node.js
+        if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
         uses: actions/setup-node@v7
         with:
           node-version: 22
@@ -55,9 +116,11 @@ jobs:
           cache-dependency-path: cardnews/pnpm-lock.yaml
 
       - name: Install dependencies
+        if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Install Chromium
+        if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Render requested Markdown
@@ -75,18 +138,19 @@ jobs:
           name=$(basename "$INPUT_MARKDOWN" .md)
           pnpm build "../$INPUT_MARKDOWN" "output/$name"
 
-      - name: Render all Markdown inputs
-        if: github.event_name == 'push'
+      - name: Render new or modified Markdown inputs
+        if: github.event_name == 'push' && steps.scope.outputs.has_targets == 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: |
-          find data -type f -name '*.md' ! -name 'README.md' ! -name 'sample.md' -print0 | while IFS= read -r -d '' input; do
+          while IFS= read -r input; do
             name=$(basename "$input" .md)
             pnpm build "$input" "output/$name"
-          done
+          done < .workflow/render_targets.txt
 
       - name: Upload PNG and JSON artifacts
+        if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: bychem-cardnews-${{ github.run_number }}
