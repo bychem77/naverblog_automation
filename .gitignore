@@ -6,7 +6,11 @@ work/
 .env
 .env.*
 *.log
+# 로컬 인증·브라우저 세션: 로그인 자격증명이므로 절대 커밋하지 않음
 auth/
 cookies/
 browser-profile/
 session/
+playwright/.auth/
+storage-state*.json
+*.cookies.json
