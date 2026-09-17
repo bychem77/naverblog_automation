@@ -39,6 +39,8 @@ require_text "$master" '소제목 → Enter 1번 → 첫 설명 문단' '소제�
 require_text "$master" '전용 배경 이미지만 사용한다' '카드뉴스 표지의 무문자 전용 배경 규칙이 없습니다.'
 require_text "$master" '`templates/review_email.html`' 'HTML 검수 메일 템플릿 사용 규칙이 없습니다.'
 require_text "$master" '서식 없는 일반 텍스트 메일로 대체하지 않는다' '일반 텍스트 메일 금지 규칙이 없습니다.'
+require_text "$master" '최소 1개, 최대 2개 실제로 삽입한다' '스티커 필수 삽입 규칙이 없습니다.'
+require_text "$master" '기본값은 도입부 첫 인사 위치의 `안녕하세요` 스티커 1개' '안녕하세요 스티커 기본 규칙이 없습니다.'
 require_text "$image_prompt" '항상 `BYCHEM_NAVERBLOG_MASTER_PROMPT.md`의 현재 버전을 따른다' '이미지 보조 프롬프트에 우선순위 선언이 없습니다.'
 
 reject_text "$master" '긴 변 약 160~185px' '마스터 프롬프트에 이전 스티커 크기가 남아 있습니다.'
@@ -46,6 +48,7 @@ reject_text "$master" '모든 소제목 앞에는 바로 앞 요소와 관계없
 reject_text "$image_prompt" '360~420px' '이미지 보조 프롬프트에 충돌하는 이전 스티커 크기가 남아 있습니다.'
 reject_text "$image_prompt" '본문 폭의 35~50%' '이미지 보조 프롬프트에 충돌하는 이전 스티커 비율이 남아 있습니다.'
 reject_text "$image_prompt" '제목 색상은 카테고리 기본색' '대표사진 제목 색상 규칙이 마스터와 충돌합니다.'
+reject_text "$master" '게시물당 0~2개 범위에서 사용한다' '스티커를 모두 생략할 수 있는 이전 규칙이 남아 있습니다.'
 
 if [ "$fail" -ne 0 ]; then
   exit 1
