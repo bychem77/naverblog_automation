@@ -37,6 +37,8 @@ require_text "$master" '본문은 나눔고딕 16pt·행간 200%' '현재 본문
 require_text "$master" '모든 소제목 앞에는 바로 앞 요소와 관계없이 빈 줄 3개, 즉 Enter 3번' '소제목 앞 Enter 3번 규칙이 없습니다.'
 require_text "$master" '소제목 → Enter 1번 → 첫 설명 문단' '소제목과 첫 설명 문단의 줄 분리 규칙이 없습니다.'
 require_text "$master" '전용 배경 이미지만 사용한다' '카드뉴스 표지의 무문자 전용 배경 규칙이 없습니다.'
+require_text "$master" '`templates/review_email.html`' 'HTML 검수 메일 템플릿 사용 규칙이 없습니다.'
+require_text "$master" '서식 없는 일반 텍스트 메일로 대체하지 않는다' '일반 텍스트 메일 금지 규칙이 없습니다.'
 require_text "$image_prompt" '항상 `BYCHEM_NAVERBLOG_MASTER_PROMPT.md`의 현재 버전을 따른다' '이미지 보조 프롬프트에 우선순위 선언이 없습니다.'
 
 reject_text "$master" '긴 변 약 160~185px' '마스터 프롬프트에 이전 스티커 크기가 남아 있습니다.'
