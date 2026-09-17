@@ -228,7 +228,11 @@ async function main() {
       prompt: data.cover.image_prompt,
       query: data.cover.image_query || 'industrial laboratory technology',
       direction: 'Use one strong topic-specific hero subject and a premium, clean composition.',
-      approvedStem: 'cover',
+      // Card-news covers must use a text-free background asset.  Deliberately
+      // do not accept the legacy `cover.*` name because it is too easily
+      // confused with a blog representative image that already has a title
+      // burned into it.  The template adds the card-news title exactly once.
+      approvedStem: 'cover_background',
       apiFilePath: path.join(imageDir, 'cover.png')
     },
     ...data.slides.map((slide, index) => ({

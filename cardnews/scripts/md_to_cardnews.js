@@ -167,6 +167,13 @@ function parseSections(source) {
 }
 
 const metadata = parseMetadata(markdown);
+const brandLineByCategory = {
+  'BYCHEM 뉴스': 'BYCHEM   |   NEWS',
+  'BYCHEM 인사이트': 'BYCHEM   |   INSIGHT',
+  'BYCHEM 솔루션': 'BYCHEM   |   SOLUTION',
+  'BYCHEM 시리즈': 'BYCHEM   |   SERIES'
+};
+const brandLine = brandLineByCategory[metadata.category] || 'BYCHEM';
 const headings = parseSections(markdown);
 const explicitTitle = markdown.match(/^-\s*제목\s*:\s*`?([^\n`]+)/m)?.[1]?.trim();
 const rootCandidates = headings.filter((h) => h.level === 1 && !isMetaHeading(h.title));
@@ -211,7 +218,7 @@ const slides = contentSections.map((section, index) => {
 
 const result = {
   schemaVersion: 1,
-  brand_line: 'BYCHEM   |   SOLUTION',
+  brand_line: brandLine,
   brand: {
     blue: '#0072CE',
     green: '#009140',
@@ -227,7 +234,7 @@ const result = {
   },
   slides,
   outro: {
-    notice: '* 본 콘텐츠의 이미지는 내용의 이해를 돕기 위한 자료입니다.',
+    notice: '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.',
     background: '../assets/backgrounds/bg_01.jpg',
     same_background_as: 'cover',
     image_prompt: 'Reuse the exact same generated image file as cover.background. Do not generate a variation.'

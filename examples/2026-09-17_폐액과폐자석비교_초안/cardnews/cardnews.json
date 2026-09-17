@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "brand_line": "BYCHEM   |   INSIGHT",
+  "brand": {
+    "blue": "#0072CE",
+    "green": "#009140",
+    "font": "Pretendard"
+  },
+  "source_md": "2026-09-17_liquid_vs_magnet.md",
+  "cover": {
+    "title": "폐액과 폐자석, 회수하는 자원은 어떻게 다를까?",
+    "hashtags": [
+      "#산업인사이트",
+      "#핵심광물",
+      "#폐액재활용"
+    ],
+    "background": "../../examples/2026-09-17_폐액과폐자석비교_초안/cardnews/images/cover_background.png",
+    "image_prompt": "Create a premium hero image for a Korean BYCHEM B2B card-news cover about \"폐액과 폐자석, 회수하는 자원은 어떻게 다를까?\". Visually express the specific subject using realistic industrial, laboratory, material, or technology photography. Clean professional mood, strong single focal point, 4:5 portrait composition, leave the lower 40 percent calm enough for a large Korean title, no text, no logo, no watermark, no identifiable company or product, no hazardous or sensational scene.",
+    "image_query": "BYCHEM"
+  },
+  "slides": [
+    {
+      "title": "출발점부터 달라요",
+      "body": "금속 함유 폐액은 여러 성분이 녹거나 섞인 액체예요. 폐자석은 모터와 전자기기에서 분리해야 하는 고체 부품입니다.",
+      "background": "../../examples/2026-09-17_폐액과폐자석비교_초안/cardnews/images/content_01.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"출발점부터 달라요\". Show 금속 함유 폐액은 여러 성분이 녹거나 섞인 액체예요. 폐자석은 모터와 전자기기에서 분리해야 하는 고체 부품입니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "semiconductor manufacturing facility"
+    },
+    {
+      "title": "폐액은 분석과 선택적 분리가 중심이에요",
+      "body": "발생 공정, 산도, 목표 금속과 방해 성분을 먼저 확인해요. 이후 침전·이온교환·용매추출 등을 목적에 맞게 조합합니다.",
+      "background": "../../examples/2026-09-17_폐액과폐자석비교_초안/cardnews/images/content_02.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"폐액은 분석과 선택적 분리가 중심이에요\". Show 발생 공정, 산도, 목표 금속과 방해 성분을 먼저 확인해요. 이후 침전·이온교환·용매추출 등을 목적에 맞게 조합합니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "chemical process technology"
+    },
+    {
+      "title": "폐자석은 해체와 선별이 먼저예요",
+      "body": "제품에서 자석을 분리하고 종류와 코팅·접착제·철계 부품을 구분해요. 상태에 따라 직접 재사용하거나 희토류 원료로 분리·정제합니다.",
+      "background": "../../examples/2026-09-17_폐액과폐자석비교_초안/cardnews/images/content_03.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"폐자석은 해체와 선별이 먼저예요\". Show 제품에서 자석을 분리하고 종류와 코팅·접착제·철계 부품을 구분해요. 상태에 따라 직접 재사용하거나 희토류 원료로 분리·정제합니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "precision engineering workshop"
+    },
+    {
+      "title": "목표 제품이 공정을 결정해요",
+      "body": "니켈은 전이금속이고 디스프로슘은 희토류 원소예요. 원료 상태와 목표 제품이 다르므로 두 회수 경로를 하나의 공정처럼 설명하면 안 됩니다.",
+      "background": "../../examples/2026-09-17_폐액과폐자석비교_초안/cardnews/images/content_04.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"목표 제품이 공정을 결정해요\". Show 니켈은 전이금속이고 디스프로슘은 희토류 원소예요. 원료 상태와 목표 제품이 다르므로 두 회수 경로를 하나의 공정처럼 설명하면 안 됩니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "scientific research laboratory"
+    }
+  ],
+  "outro": {
+    "notice": "* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.",
+    "background": "../../examples/2026-09-17_폐액과폐자석비교_초안/cardnews/images/cover_background.png",
+    "same_background_as": "cover",
+    "image_prompt": "Reuse the exact same generated image file as cover.background. Do not generate a variation."
+  },
+  "metadata": {
+    "derived_from": "폐액과 폐자석, 회수하는 자원은 어떻게 다를까?",
+    "category": "BYCHEM 인사이트",
+    "sections_detected": [
+      "🔎 출발점부터 달라요",
+      "🧪 폐액은 분석과 선택적 분리가 중심이에요",
+      "🧲 폐자석은 해체와 선별이 먼저예요",
+      "📌 목표 제품이 공정을 결정해요"
+    ],
+    "official_basis_present": false,
+    "beverage_topic": false,
+    "image_sources": {
+      "approved": 5,
+      "pexels": 0,
+      "openai": 0,
+      "placeholders": 0,
+      "total": 5,
+      "model": "gpt-image-2",
+      "size": "1024x1536",
+      "quality": "medium"
+    },
+    "approved_source_attribution": {
+      "pexels": 0,
+      "openai": 5,
+      "unspecified": 0
+    }
+  }
+}

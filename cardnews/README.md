@@ -4,7 +4,7 @@ Markdown 원고를 카드뉴스 JSON으로 정리하고, BYCHEM 전용 HTML/CSS 
 
 ## 카드 구성
 
-1. 표지: 원고 주제에 맞춘 AI 생성 배경, 제목, 해시태그
+1. 표지: 원고 주제에 맞춘 글자 없는 전용 배경, 제목, 해시태그
 2. 본문 3~6장: 원고의 핵심 단락을 완결된 1~2문장으로 그대로 사용
 3. 아웃트로: 표지와 완전히 동일한 배경, BYCHEM CI, 20px AI 이미지 고지
 
@@ -72,13 +72,13 @@ Actions 탭의 `BYCHEM Card News`에서 원고 경로를 입력해 수동 실행
 원고가 `cardnews/data/2026-08-26_IPA.md`라면 검수한 이미지를 아래 경로에 저장합니다.
 
 ```text
-cardnews/assets/approved/2026-08-26_IPA/cover.png
+cardnews/assets/approved/2026-08-26_IPA/cover_background.png
 cardnews/assets/approved/2026-08-26_IPA/content_01.png
 cardnews/assets/approved/2026-08-26_IPA/content_02.png
 ```
 
-`cover`는 표지와 아웃트로에 함께 사용하며, 본문은 `content_01`부터 순서대로 연결됩니다. 일부 이미지만 확정해도 나머지는 사내 OpenAI API부터 자동으로 채우고, API 생성이 실패한 페이지만 Pexels로 보완합니다. Pexels 또는 OpenAI에서 만든 확정 이미지의 출처 표시는 같은 폴더의 `sources.json`에 기록합니다. 자세한 형식은 [`assets/approved/README.md`](assets/approved/README.md)를 참고합니다.
+`cover_background`는 표지와 아웃트로에 함께 사용하는 카드뉴스 전용 무문자 배경입니다. 블로그 대표사진이나 `01_cover.png`처럼 제목이 이미 합성된 파일은 사용할 수 없습니다. 본문은 `content_01`부터 순서대로 연결됩니다. 일부 이미지만 확정해도 나머지는 사내 OpenAI API부터 자동으로 채우고, API 생성이 실패한 페이지만 Pexels로 보완합니다. Pexels 또는 OpenAI에서 만든 확정 이미지의 출처 표시는 같은 폴더의 `sources.json`에 기록합니다. 자세한 형식은 [`assets/approved/README.md`](assets/approved/README.md)를 참고합니다.
 
-Actions 아티팩트를 검수할 때는 각 원고 폴더의 `images/`에 들어 있는 글자 없는 배경 이미지 중 확정본을 위 경로로 복사합니다. `01_cover.png`처럼 글자가 합성된 최종 카드 PNG가 아니라 `images/cover.png`, `images/content_01.png` 등을 사용합니다.
+Actions 아티팩트를 검수할 때는 각 원고 폴더의 `images/`에 들어 있는 글자 없는 배경 이미지 중 확정본을 위 경로로 복사합니다. 표지 배경은 `cover_background.png`라는 이름으로 저장합니다. `01_cover.png`처럼 글자가 합성된 최종 카드 PNG나 블로그 대표사진을 복사하지 않습니다.
 
 API 키와 토큰은 저장소에 커밋하지 않습니다.
