@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "brand_line": "BYCHEM   |   INSIGHT",
+  "brand": {
+    "blue": "#0072CE",
+    "green": "#009140",
+    "font": "Pretendard"
+  },
+  "source_md": "2026-09-22_process_physical_ai.md",
+  "cover": {
+    "title": "공정 제조의 피지컬 AI, 화학 공장은 어떻게 달라질까?",
+    "hashtags": [
+      "#산업인사이트",
+      "#첨단산업",
+      "#AI인사이트"
+    ],
+    "background": "../../examples/2026-09-22_공정제조피지컬AI_초안/cardnews/images/cover_background.png",
+    "image_prompt": "Create a premium hero image for a Korean BYCHEM B2B card-news cover about \"공정 제조의 피지컬 AI, 화학 공장은 어떻게 달라질까?\". Visually express the specific subject using realistic industrial, laboratory, material, or technology photography. Clean professional mood, strong single focal point, 4:5 portrait composition, leave the lower 40 percent calm enough for a large Korean title, no text, no logo, no watermark, no identifiable company or product, no hazardous or sensational scene.",
+    "image_query": "AI BYCHEM"
+  },
+  "slides": [
+    {
+      "title": "로봇만 피지컬 AI는 아니에요",
+      "body": "공정 제조의 AI는 온도·압력·유량뿐 아니라 농도와 점도처럼 물질의 변화를 읽어요. 현실의 공정을 감지하고 판단을 돕는다는 점에서 피지컬 AI의 한 형태입니다.",
+      "background": "../../examples/2026-09-22_공정제조피지컬AI_초안/cardnews/images/content_01.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"로봇만 피지컬 AI는 아니에요\". Show 공정 제조의 AI는 온도·압력·유량뿐 아니라 농도와 점도처럼 물질의 변화를 읽어요. 현실의 공정을 감지하고 판단을 돕는다는 점에서 피지컬 AI의 한 형태입니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "AI"
+    },
+    {
+      "title": "좋은 판단은 좋은 데이터에서 시작해요",
+      "body": "센서값에는 설비, 배치, 원료와 작업 조건의 맥락이 함께 연결돼야 해요. 교정 상태와 결측값이 정리되지 않으면 AI 판단도 흔들릴 수 있습니다.",
+      "background": "../../examples/2026-09-22_공정제조피지컬AI_초안/cardnews/images/content_02.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"좋은 판단은 좋은 데이터에서 시작해요\". Show 센서값에는 설비, 배치, 원료와 작업 조건의 맥락이 함께 연결돼야 해요. 교정 상태와 결측값이 정리되지 않으면 AI 판단도 흔들릴 수 있습니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "AI"
+    },
+    {
+      "title": "감지·분석·사람 검토가 한 흐름이에요",
+      "body": "AI는 정상 패턴과 현재 상태를 비교해 이상 징후와 품질 이탈 가능성을 보여줘요. 담당자는 안전 기준과 작업 절차를 함께 검토해 필요한 조치를 결정합니다.",
+      "background": "../../examples/2026-09-22_공정제조피지컬AI_초안/cardnews/images/content_03.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"감지·분석·사람 검토가 한 흐름이에요\". Show AI는 정상 패턴과 현재 상태를 비교해 이상 징후와 품질 이탈 가능성을 보여줘요. 담당자는 안전 기준과 작업 절차를 함께 검토해 필요한 조치를 결정합니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "AI"
+    },
+    {
+      "title": "작은 문제부터 검증해요",
+      "body": "이상 알림, 품질 예측, 예지 보전처럼 기준이 분명한 문제부터 시작해요. 설명 가능성, 사람의 개입 절차, 접근 권한과 네트워크 보안도 함께 설계해야 합니다.",
+      "background": "../../examples/2026-09-22_공정제조피지컬AI_초안/cardnews/images/content_04.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"작은 문제부터 검증해요\". Show 이상 알림, 품질 예측, 예지 보전처럼 기준이 분명한 문제부터 시작해요. 설명 가능성, 사람의 개입 절차, 접근 권한과 네트워크 보안도 함께 설계해야 합니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "scientific research laboratory"
+    }
+  ],
+  "outro": {
+    "notice": "* 본 콘텐츠에는 담당자 검수를 완료한 확정 이미지가 사용되었습니다.",
+    "background": "../../examples/2026-09-22_공정제조피지컬AI_초안/cardnews/images/cover_background.png",
+    "same_background_as": "cover",
+    "image_prompt": "Reuse the exact same generated image file as cover.background. Do not generate a variation."
+  },
+  "metadata": {
+    "derived_from": "공정 제조의 피지컬 AI, 화학 공장은 어떻게 달라질까?",
+    "category": "BYCHEM 인사이트",
+    "sections_detected": [
+      "🏭 로봇만 피지컬 AI는 아니에요",
+      "🔎 좋은 판단은 좋은 데이터에서 시작해요",
+      "💡 감지·분석·사람 검토가 한 흐름이에요",
+      "✅ 작은 문제부터 검증해요"
+    ],
+    "official_basis_present": false,
+    "beverage_topic": false,
+    "image_sources": {
+      "approved": 5,
+      "pexels": 0,
+      "openai": 0,
+      "placeholders": 0,
+      "total": 5,
+      "model": "gpt-image-2",
+      "size": "1024x1536",
+      "quality": "medium"
+    },
+    "approved_source_attribution": {
+      "pexels": 0,
+      "openai": 0,
+      "unspecified": 5
+    }
+  }
+}
