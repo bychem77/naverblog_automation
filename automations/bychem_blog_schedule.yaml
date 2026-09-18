@@ -1,0 +1,26 @@
+version: 1
+name: 바이켐 블로그·카드뉴스 자동 제작
+kind: heartbeat
+status: active
+timezone: Asia/Seoul
+schedule:
+  days:
+    - Tuesday
+    - Thursday
+  time: "09:00"
+  description: 매주 화요일·목요일 오전 9시
+execution:
+  environment: local_project
+  posts_per_run: 1
+  naver_visibility: private
+  prompt_file: automations/BYCHEM_BLOG_AUTOMATION_PROMPT.md
+  local_settings_file: automations/local.settings.yaml
+  result_destination: current_thread
+requirements:
+  - Codex 데스크톱 앱에서 이 저장소를 로컬 프로젝트로 연다.
+  - 네이버 로그인은 해당 컴퓨터의 인앱 브라우저에서 1회 완료한다.
+  - 이메일 앱 연결과 검토자 주소는 로컬 설정에 등록한다.
+  - GitHub에는 쿠키·세션·비밀번호·토큰·실제 이메일 주소를 저장하지 않는다.
+restore:
+  instruction_file: automations/RESTORE_PROMPT.md
+  requires_one_time_registration: true

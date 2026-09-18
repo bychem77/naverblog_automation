@@ -1,0 +1,11 @@
+# 이 파일을 local.settings.yaml로 복사한 뒤 새 컴퓨터의 실제 설정을 입력합니다.
+# local.settings.yaml은 Git에서 제외되므로 이메일 주소나 로컬 경로가 GitHub에 올라가지 않습니다.
+
+review_email:
+  provider: connected_email_app
+  recipients:
+    - reviewer@example.com
+
+naver:
+  blog_id: bychem77
+  login_session: codex_in_app_browser

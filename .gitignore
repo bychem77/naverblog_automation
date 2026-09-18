@@ -14,3 +14,5 @@ session/
 playwright/.auth/
 storage-state*.json
 *.cookies.json
+# 컴퓨터별 예약 자동화 설정(검토자 이메일 등)
+automations/local.settings.yaml

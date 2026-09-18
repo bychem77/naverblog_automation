@@ -33,6 +33,16 @@
 
 세부 실행 규칙과 인수인계 방법은 [`docs/주간자동화운영.md`](docs/주간자동화운영.md)를 참고하세요. Codex 앱에 등록된 실제 예약 작업은 Git 저장소와 별도로 관리되므로, 저장소를 다른 환경에서 사용하면 같은 예약을 다시 만들어야 합니다.
 
+### 새 컴퓨터에서 예약 작업 복원
+
+`git pull`을 하면 화·목 오전 9시 일정과 전체 실행 프롬프트도 함께 내려받습니다.
+
+- 예약 정의: [`automations/bychem_blog_schedule.yaml`](automations/bychem_blog_schedule.yaml)
+- 실제 실행 프롬프트: [`automations/BYCHEM_BLOG_AUTOMATION_PROMPT.md`](automations/BYCHEM_BLOG_AUTOMATION_PROMPT.md)
+- 새 컴퓨터용 복원 요청문: [`automations/RESTORE_PROMPT.md`](automations/RESTORE_PROMPT.md)
+
+새 컴퓨터에서는 네이버·이메일을 최초 1회 연결하고 복원 요청문을 Codex에 입력하면 됩니다. 실제 예약 활성 상태와 로그인 세션은 보안상 Git으로 옮길 수 없습니다.
+
 ## 저장소 구조
 
 ```text
@@ -44,6 +54,7 @@ references/          바이켐 제품 카탈로그 등 승인 참고자료
 scripts/             캘린더 등 자료 점검용 보조 스크립트
 templates/           월간 캘린더·작업 요청·원고 산출물 템플릿
 cardnews/            Markdown 기반 BYCHEM 카드뉴스 JSON·PNG·AI 이미지 자동화
+automations/          화·목 오전 9시 예약 정의·실행 프롬프트·복원 안내
 ```
 
 ## 카드뉴스 자동화

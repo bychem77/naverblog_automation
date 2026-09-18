@@ -7,6 +7,14 @@
 3. 이미지 작업이면 `prompts/이미지생성_캐릭터활용_프롬프트.md`
 4. 네이버 입력·발행이면 `docs/WORKFLOW.md`
 
+예약 작업을 새 컴퓨터에 복원하거나 수정할 때는 다음 파일을 원본으로 사용한다.
+
+1. `automations/bychem_blog_schedule.yaml`
+2. `automations/BYCHEM_BLOG_AUTOMATION_PROMPT.md`
+3. `automations/RESTORE_PROMPT.md`
+
+동일한 이름의 예약 작업이 이미 있으면 중복 생성하지 말고 최신 저장소 내용으로 업데이트한다. 컴퓨터별 검토자 주소는 `automations/local.settings.yaml`에서 읽고, 해당 파일이나 로그인 세션을 GitHub에 커밋하지 않는다.
+
 최상위 원칙:
 
 - 승인 전에는 비공개로만 저장한다.
