@@ -1,6 +1,6 @@
 # BYCHEM 카드뉴스 자동화
 
-Markdown 원고를 카드뉴스 JSON으로 정리하고, BYCHEM 전용 HTML/CSS 템플릿을 이용해 1080×1350 PNG로 렌더링합니다.
+마스터 프롬프트의 카드뉴스 대상 글에 한해 Markdown 원고를 카드뉴스 JSON으로 정리하고, BYCHEM 전용 HTML/CSS 템플릿을 이용해 1080×1350 PNG로 렌더링합니다. 자동 실행과 수동 Actions 실행 모두 원고의 `카테고리: BYCHEM 인사이트` 표기가 필요합니다.
 
 ## 카드 구성
 
@@ -53,9 +53,9 @@ pnpm render output/sample/cardnews.json output/sample
 
 ## GitHub Actions
 
-Actions 탭의 `BYCHEM Card News`에서 원고 경로를 입력해 수동 실행할 수 있습니다.
+Actions 탭의 `BYCHEM Card News`에서 인사이트 원고 경로를 입력해 수동 실행할 수 있습니다. 다른 카테고리 또는 카테고리 표기가 없는 원고는 렌더링하지 않습니다.
 
-`main`에 반영된 푸시에서는 새로 추가되거나 수정된 `cardnews/data/*.md`만 자동 렌더링합니다. 이미 한 번 등록됐고 내용이 바뀌지 않은 카드뉴스 원고는 다시 만들지 않습니다.
+`main`에 반영된 푸시에서는 새로 추가되거나 수정된 `cardnews/data/*.md` 중 인사이트 원고만 자동 렌더링합니다. 이미 한 번 등록됐고 내용이 바뀌지 않은 카드뉴스 원고는 다시 만들지 않습니다.
 
 다음 항목이 바뀌면 전체 카드뉴스를 다시 렌더링합니다.
 

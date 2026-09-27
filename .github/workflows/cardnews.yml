@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       markdown_path:
-        description: "Markdown path (for example: cardnews/data/sample.md)"
+        description: "BYCHEM 인사이트 Markdown path (for example: cardnews/data/2026-09-22_process_physical_ai.md)"
         required: true
         default: "cardnews/data/sample.md"
         type: string
@@ -92,6 +92,15 @@ jobs:
             sort -u -o "$target_file" "$target_file"
           fi
 
+          insight_targets="cardnews/.workflow/insight_targets.txt"
+          : > "$insight_targets"
+          while IFS= read -r input; do
+            if grep -Eq '^[[:space:]]*(-[[:space:]]*)?카테고리:[[:space:]]*`?BYCHEM 인사이트`?[[:space:]]*$' "cardnews/$input"; then
+              printf '%s\n' "$input" >> "$insight_targets"
+            fi
+          done < "$target_file"
+          mv "$insight_targets" "$target_file"
+
           if [[ -s "$target_file" ]]; then
             echo "has_targets=true" >> "$GITHUB_OUTPUT"
             echo "Card-news inputs to render:"
@@ -135,6 +144,10 @@ jobs:
             *) echo "Input must be a Markdown file under cardnews/data/" >&2; exit 1 ;;
           esac
           test -f "../$INPUT_MARKDOWN"
+          if ! grep -Eq '^[[:space:]]*(-[[:space:]]*)?카테고리:[[:space:]]*`?BYCHEM 인사이트`?[[:space:]]*$' "../$INPUT_MARKDOWN"; then
+            echo "Only BYCHEM 인사이트 card news is generated." >&2
+            exit 1
+          fi
           name=$(basename "$INPUT_MARKDOWN" .md)
           pnpm build "../$INPUT_MARKDOWN" "output/$name"
 

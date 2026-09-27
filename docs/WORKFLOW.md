@@ -28,7 +28,7 @@ GitHub 최신 내용을 반영하고 `scripts/check_prompt_consistency.sh`를 �
 
 ## 7. 카드뉴스와 검수 전달
 
-카드뉴스는 블로그 원고를 바탕으로 별도 제작하고, 비공개 게시 링크와 함께 담당자에게 전달합니다. 예약 실행의 이메일 형식과 오류 처리는 `automations/BYCHEM_BLOG_AUTOMATION_PROMPT.md`를 따릅니다.
+마스터 프롬프트에서 카드뉴스 대상으로 정한 글에만 블로그 원고를 바탕으로 카드뉴스를 별도 제작합니다. 모든 글의 비공개 게시 링크를 담당자에게 전달하고, 카드뉴스를 제작한 글에만 결과물을 함께 전달합니다. 예약 실행의 이메일 형식과 오류 처리는 `automations/BYCHEM_BLOG_AUTOMATION_PROMPT.md`를 따릅니다.
 
 ## 8. 공개 전환
 
