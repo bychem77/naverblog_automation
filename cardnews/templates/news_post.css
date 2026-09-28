@@ -37,31 +37,31 @@ body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; }
 .story {
   position: absolute;
   z-index: 2;
-  top: 72px;
-  left: 76px;
-  right: 76px;
+  top: 68px;
+  left: 72px;
+  right: 72px;
   text-align: center;
 }
 
 .story h1 {
-  max-height: 218px;
+  max-height: 238px;
   margin: 0;
   overflow: hidden;
   font-size: 88px;
   font-weight: 800;
-  line-height: 1.08;
+  line-height: 1.06;
   letter-spacing: -3.2px;
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
 
 .story p {
-  max-height: 96px;
-  margin: 14px auto 0;
+  max-height: 92px;
+  margin: 10px auto 0;
   overflow: hidden;
   font-size: 38px;
   font-weight: 600;
-  line-height: 1.28;
+  line-height: 1.24;
   letter-spacing: -1.2px;
   word-break: keep-all;
   overflow-wrap: anywhere;
@@ -72,10 +72,10 @@ body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; }
 .print {
   position: absolute;
   z-index: 2;
-  top: 418px;
+  top: 404px;
   left: 96px;
   width: 888px;
-  height: 748px;
+  height: 762px;
   margin: 0;
   padding: 22px;
   background: #fafafa;
