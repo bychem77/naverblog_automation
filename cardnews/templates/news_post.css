@@ -50,7 +50,7 @@ body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; }
 .story {
   position: absolute;
   z-index: 2;
-  top: 82px;
+  top: 126px;
   left: 72px;
   right: 72px;
   text-align: left;
