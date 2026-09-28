@@ -15,6 +15,7 @@ on:
       - "cardnews/templates/news_post.html"
       - "cardnews/templates/news_post.css"
       - "cardnews/scripts/render_news_post.js"
+      - "cardnews/scripts/export_news_caption.js"
       - "cardnews/assets/logo_white.svg"
       - "cardnews/package.json"
       - "cardnews/pnpm-lock.yaml"
@@ -57,7 +58,7 @@ jobs:
             mapfile -d '' changed_files < <(git diff --name-only --diff-filter=ACMR -z "$BEFORE_SHA" "$AFTER_SHA")
             for file in "${changed_files[@]}"; do
               case "$file" in
-                news/assets/approved/*|cardnews/templates/news_post.html|cardnews/templates/news_post.css|cardnews/scripts/render_news_post.js|cardnews/assets/logo_white.svg|cardnews/package.json|cardnews/pnpm-lock.yaml|.github/workflows/news-instagram.yml)
+                news/assets/approved/*|cardnews/templates/news_post.html|cardnews/templates/news_post.css|cardnews/scripts/render_news_post.js|cardnews/scripts/export_news_caption.js|cardnews/assets/logo_white.svg|cardnews/package.json|cardnews/pnpm-lock.yaml|.github/workflows/news-instagram.yml)
                   render_all=true
                   break
                   ;;
@@ -118,25 +119,30 @@ jobs:
             exit 1
           fi
           test -f "$INPUT_JSON"
+          mkdir -p news/output
           name=$(basename "$INPUT_JSON" .json)
           node cardnews/scripts/render_news_post.js "$INPUT_JSON" "news/output/$name.png"
+          node cardnews/scripts/export_news_caption.js "$INPUT_JSON" "news/output/${name}_caption.txt"
 
       - name: Render new or modified news inputs
         if: github.event_name == 'push' && steps.scope.outputs.has_targets == 'true'
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p news/output
           while IFS= read -r input; do
             name=$(basename "$input" .json)
             node cardnews/scripts/render_news_post.js "$input" "news/output/$name.png"
+            node cardnews/scripts/export_news_caption.js "$input" "news/output/${name}_caption.txt"
           done < news/.workflow/render_targets.txt
 
-      - name: Upload Instagram PNG
+      - name: Upload Instagram assets
         if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: bychem-news-instagram-${{ github.run_number }}
-          path: news/output/*.png
+          path: |
+            news/output/*.png
+            news/output/*_caption.txt
           if-no-files-found: error
           retention-days: 30
-
