@@ -12,6 +12,7 @@
     <div class="veil"></div>
 
     <div class="news-kicker">BYCHEM   |   News</div>
+    <div class="news-date" id="news-date"></div>
 
     <header class="story">
       <h1 id="headline"></h1>
@@ -51,12 +52,13 @@
       }
     }
 
-    window.renderNewsPost = async ({ title, subtitle, imageUrl, orientation }) => {
+    window.renderNewsPost = async ({ title, subtitle, imageUrl, orientation, dateLabel }) => {
       const post = document.querySelector('#post');
       const background = document.querySelector('#background');
       const photo = document.querySelector('#photo');
       const headline = document.querySelector('#headline');
       const summary = document.querySelector('#summary');
+      const newsDate = document.querySelector('#news-date');
 
       post.classList.toggle('photo-landscape', orientation === 'landscape');
       post.classList.toggle('photo-portrait', orientation === 'portrait');
@@ -66,6 +68,7 @@
       headline.textContent = title;
       summary.textContent = subtitle ? `"${subtitle}"` : '';
       summary.hidden = !subtitle;
+      newsDate.textContent = dateLabel || '';
 
       await Promise.all([background.decode(), photo.decode(), document.fonts.ready]);
       fitText(headline, 88, 38, 3);
