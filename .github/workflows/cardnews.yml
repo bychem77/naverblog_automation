@@ -13,7 +13,11 @@ on:
     paths:
       - "cardnews/data/**/*.md"
       - "cardnews/scripts/**"
+      - "!cardnews/scripts/render_news_post.js"
+      - "!cardnews/scripts/export_news_caption.js"
       - "cardnews/templates/**"
+      - "!cardnews/templates/news_post.html"
+      - "!cardnews/templates/news_post.css"
       - "cardnews/assets/**"
       - "cardnews/package.json"
       - "cardnews/pnpm-lock.yaml"
@@ -68,6 +72,8 @@ jobs:
 
             for file in "${changed_files[@]}"; do
               case "$file" in
+                cardnews/scripts/render_news_post.js|cardnews/scripts/export_news_caption.js|cardnews/templates/news_post.html|cardnews/templates/news_post.css)
+                  ;;
                 cardnews/scripts/*|cardnews/templates/*|cardnews/assets/*|cardnews/package.json|cardnews/pnpm-lock.yaml|.github/workflows/cardnews.yml)
                   render_all=true
                   break
