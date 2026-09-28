@@ -12,7 +12,9 @@ schedule:
 execution:
   environment: local_project
   posts_per_run: 1
-  naver_visibility: private
+  naver_visibility: neighbors
+  naver_comments_allowed: true
+  naver_empathy_allowed: true
   prompt_file: automations/BYCHEM_BLOG_AUTOMATION_PROMPT.md
   local_settings_file: automations/local.settings.yaml
   result_destination: current_thread
