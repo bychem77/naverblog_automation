@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { chromium } = require('playwright');
+const sharp = require('sharp');
 
 const [, , inputArg, outputArg] = process.argv;
 if (!inputArg || !outputArg) {
@@ -41,6 +43,31 @@ if (
   throw new Error(`Approved image file not found within repository: ${data.image}`);
 }
 
+async function normalizeImage(sourcePath) {
+  const normalizedPath = path.join(
+    os.tmpdir(),
+    `bychem-news-${process.pid}-${Date.now()}.jpg`
+  );
+
+  await sharp(sourcePath, { failOn: 'none' })
+    .rotate()
+    .jpeg({ quality: 92, chromaSubsampling: '4:4:4' })
+    .toFile(normalizedPath);
+
+  const metadata = await sharp(normalizedPath).metadata();
+  const width = metadata.width || 0;
+  const height = metadata.height || 0;
+
+  if (!width || !height) {
+    throw new Error('Unable to read approved image dimensions after normalization');
+  }
+
+  return {
+    normalizedPath,
+    orientation: height > width ? 'portrait' : 'landscape'
+  };
+}
+
 async function decodeImage(page, selector) {
   await page.locator(selector).evaluate(async (image) => {
     if (!image.complete || image.naturalWidth === 0) {
@@ -60,6 +87,7 @@ async function decodeImage(page, selector) {
 
 async function main() {
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+  const { normalizedPath, orientation } = await normalizeImage(imagePath);
   const browser = await chromium.launch({ headless: true });
 
   try {
@@ -73,10 +101,13 @@ async function main() {
       { waitUntil: 'load' }
     );
 
+    const normalizedUrl = pathToFileURL(normalizedPath).href;
+
     await page.evaluate((payload) => window.renderNewsPost(payload), {
       title: data.title.trim(),
       subtitle: data.subtitle?.trim() || '',
-      imageUrl: pathToFileURL(imagePath).href
+      imageUrl: normalizedUrl,
+      orientation
     });
 
     await decodeImage(page, '#background');
@@ -89,9 +120,10 @@ async function main() {
       animations: 'disabled'
     });
 
-    console.log(`Rendered ${outputPath}`);
+    console.log(`Rendered ${outputPath} (${orientation})`);
   } finally {
     await browser.close();
+    fs.rmSync(normalizedPath, { force: true });
   }
 }
 
