@@ -67,10 +67,10 @@ jobs:
           fi
 
           if [[ "$render_all" == true ]]; then
-            find news/data -maxdepth 1 -type f -name '*.json' -print | sort -u > "$target_file"
+            find news/data -maxdepth 1 -type f -name '*.json' ! -name 'sample.json' -print | sort -u > "$target_file"
           else
             for file in "${changed_files[@]}"; do
-              case "$file" in news/data/*.json) printf '%s\n' "$file" >> "$target_file" ;; esac
+              case "$file" in news/data/sample.json) ;; news/data/*.json) printf '%s\n' "$file" >> "$target_file" ;; esac
             done
             sort -u -o "$target_file" "$target_file"
           fi
