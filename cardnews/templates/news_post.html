@@ -51,11 +51,15 @@
       }
     }
 
-    window.renderNewsPost = async ({ title, subtitle, imageUrl }) => {
+    window.renderNewsPost = async ({ title, subtitle, imageUrl, orientation }) => {
+      const post = document.querySelector('#post');
       const background = document.querySelector('#background');
       const photo = document.querySelector('#photo');
       const headline = document.querySelector('#headline');
       const summary = document.querySelector('#summary');
+
+      post.classList.toggle('photo-landscape', orientation === 'landscape');
+      post.classList.toggle('photo-portrait', orientation === 'portrait');
 
       background.src = imageUrl;
       photo.src = imageUrl;
