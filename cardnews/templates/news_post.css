@@ -89,14 +89,26 @@ body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; }
 .print {
   position: absolute;
   z-index: 2;
-  top: 420px;
-  left: 96px;
-  width: 888px;
-  height: 746px;
   margin: 0;
   padding: 22px;
   background: #fafafa;
   box-shadow: 0 22px 45px rgba(0, 0, 0, .3);
+}
+
+/* 가로형 사진 프레임: 4:3 */
+.photo-landscape .print {
+  top: 438px;
+  left: 96px;
+  width: 888px;
+  height: 710px;
+}
+
+/* 세로형 사진 프레임 */
+.photo-portrait .print {
+  top: 394px;
+  left: 225px;
+  width: 630px;
+  height: 790px;
 }
 
 .print-window {
