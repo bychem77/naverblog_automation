@@ -36,17 +36,15 @@ body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; }
 
 .news-kicker {
   position: absolute;
+  top: 62px;
+  left: 68px;
   z-index: 3;
-  top: 26px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 28px;
+  white-space: pre;
+  font-size: 36.4px;
+  font-weight: 600;
   line-height: 1;
-  font-weight: 800;
-  letter-spacing: -.6px;
-  color: rgba(255,255,255,.96);
-  text-transform: uppercase;
+  letter-spacing: -.63px;
+  color: #fff;
 }
 
 .story {
@@ -128,9 +126,10 @@ body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; }
 
 .brand {
   position: absolute;
-  z-index: 3;
-  right: 56px;
-  bottom: 38px;
-  width: 128px;
+  right: 48px;
+  bottom: 52px;
+  width: 118px;
   height: auto;
+  z-index: 4;
+  opacity: .98;
 }
