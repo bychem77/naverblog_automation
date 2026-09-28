@@ -11,6 +11,8 @@
     <img id="background" class="background" alt="" />
     <div class="veil"></div>
 
+    <div class="news-kicker">BYCHEM News</div>
+
     <header class="story">
       <h1 id="headline"></h1>
       <p id="summary"></p>
@@ -58,7 +60,7 @@
       background.src = imageUrl;
       photo.src = imageUrl;
       headline.textContent = title;
-      summary.textContent = subtitle || '';
+      summary.textContent = subtitle ? `"${subtitle}"` : '';
       summary.hidden = !subtitle;
 
       await Promise.all([background.decode(), photo.decode(), document.fonts.ready]);
