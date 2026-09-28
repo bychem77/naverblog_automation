@@ -2,6 +2,16 @@
   "category": "BYCHEM 뉴스",
   "title": "바이켐 뉴스 게시물 예시",
   "subtitle": "실제 게시 전 승인된 행사 사진과 문구로 교체해 주세요",
-  "image": "cardnews/assets/approved/2026-09-22_process_physical_ai/cover_background.png"
+  "image": "cardnews/assets/approved/2026-09-22_process_physical_ai/cover_background.png",
+  "caption": "바이켐의 새로운 소식을 전합니다.\n\n실제 게시 전 승인된 보도자료와 원자료를 바탕으로 캡션을 작성해 주세요.",
+  "hashtags": [
+    "#바이켐",
+    "#BYCHEM",
+    "#바이켐뉴스",
+    "#산업기술",
+    "#기업소식",
+    "#B2B",
+    "#제조업",
+    "#화학산업"
+  ]
 }
-
