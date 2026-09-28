@@ -43,6 +43,20 @@ if (
   throw new Error(`Approved image file not found within repository: ${data.image}`);
 }
 
+function getDateLabel(inputPath) {
+  const fileName = path.basename(inputPath);
+  const match = fileName.match(/^(\d{4})-(\d{2})-\d{2}/);
+  if (!match) return '';
+
+  const monthLabels = [
+    'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUNE',
+    'JULY', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'
+  ];
+
+  const monthIndex = Number(match[2]) - 1;
+  return `${match[1]} ${monthLabels[monthIndex] || ''}`.trim();
+}
+
 async function normalizeImage(sourcePath) {
   const normalizedPath = path.join(
     os.tmpdir(),
@@ -107,7 +121,8 @@ async function main() {
       title: data.title.trim(),
       subtitle: data.subtitle?.trim() || '',
       imageUrl: normalizedUrl,
-      orientation
+      orientation,
+      dateLabel: getDateLabel(inputPath)
     });
 
     await decodeImage(page, '#background');
