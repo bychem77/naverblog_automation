@@ -24,15 +24,28 @@
   </main>
 
   <script>
-    function fitText(element, start, minimum) {
+    function fitText(element, start, minimum, maxLines) {
+      const computed = getComputedStyle(element);
+      const maxHeight = Number.parseFloat(computed.maxHeight);
+
       let size = start;
       element.style.fontSize = `${size}px`;
-      while (element.scrollHeight > element.clientHeight && size > minimum) {
+
+      while (
+        Number.isFinite(maxHeight) &&
+        element.scrollHeight > maxHeight + 1 &&
+        size > minimum
+      ) {
         size -= 2;
         element.style.fontSize = `${size}px`;
       }
-      if (element.scrollHeight > element.clientHeight) {
-        throw new Error(`Text is too long for the news template: ${element.id}`);
+
+      if (Number.isFinite(maxHeight) && element.scrollHeight > maxHeight + 1) {
+        element.style.fontSize = `${minimum}px`;
+        element.style.display = '-webkit-box';
+        element.style.webkitBoxOrient = 'vertical';
+        element.style.webkitLineClamp = String(maxLines);
+        element.style.overflow = 'hidden';
       }
     }
 
@@ -49,8 +62,8 @@
       summary.hidden = !subtitle;
 
       await Promise.all([background.decode(), photo.decode(), document.fonts.ready]);
-      fitText(headline, 88, 44);
-      if (subtitle) fitText(summary, 38, 24);
+      fitText(headline, 88, 38, 3);
+      if (subtitle) fitText(summary, 38, 22, 2);
     };
   </script>
 </body>
