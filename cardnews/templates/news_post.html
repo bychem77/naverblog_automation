@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, initial-scale=1" />
+  <link rel="stylesheet" href="news_post.css" />
+  <title>BYCHEM News Instagram Post</title>
+</head>
+<body>
+  <main id="post" class="post">
+    <img id="background" class="background" alt="" />
+    <div class="veil"></div>
+
+    <header class="story">
+      <h1 id="headline"></h1>
+      <p id="summary"></p>
+    </header>
+
+    <figure class="print">
+      <div class="print-window"><img id="photo" alt="" /></div>
+    </figure>
+
+    <img class="brand" src="../assets/logo_white.svg" alt="BYCHEM" />
+  </main>
+
+  <script>
+    function fitText(element, start, minimum) {
+      let size = start;
+      element.style.fontSize = `${size}px`;
+      while (element.scrollHeight > element.clientHeight && size > minimum) {
+        size -= 2;
+        element.style.fontSize = `${size}px`;
+      }
+      if (element.scrollHeight > element.clientHeight) {
+        throw new Error(`Text is too long for the news template: ${element.id}`);
+      }
+    }
+
+    window.renderNewsPost = async ({ title, subtitle, imageUrl }) => {
+      const background = document.querySelector('#background');
+      const photo = document.querySelector('#photo');
+      const headline = document.querySelector('#headline');
+      const summary = document.querySelector('#summary');
+
+      background.src = imageUrl;
+      photo.src = imageUrl;
+      headline.textContent = title;
+      summary.textContent = subtitle || '';
+      summary.hidden = !subtitle;
+
+      await Promise.all([background.decode(), photo.decode(), document.fonts.ready]);
+      fitText(headline, 78, 54);
+      if (subtitle) fitText(summary, 34, 26);
+    };
+  </script>
+</body>
+</html>
+

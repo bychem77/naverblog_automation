@@ -1,0 +1,23 @@
+@font-face {
+  font-family: 'Pretendard';
+  src: url('../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: block;
+}
+
+* { box-sizing: border-box; }
+html, body { width: 1080px; height: 1350px; margin: 0; overflow: hidden; }
+body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; }
+.post { position: relative; width: 1080px; height: 1350px; overflow: hidden; color: white; background: #12202b; }
+.background { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.veil { position: absolute; inset: 0; background: rgba(8, 17, 26, .65); }
+.story { position: absolute; z-index: 2; top: 115px; left: 86px; right: 86px; text-align: center; }
+.story h1 { max-height: 282px; margin: 0; overflow: hidden; font-size: 78px; font-weight: 800; line-height: 1.14; letter-spacing: -3px; word-break: keep-all; overflow-wrap: anywhere; }
+.story p { max-height: 96px; margin: 22px auto 0; overflow: hidden; font-size: 34px; font-weight: 600; line-height: 1.35; letter-spacing: -1px; word-break: keep-all; overflow-wrap: anywhere; }
+.story p[hidden] { display: none; }
+.print { position: absolute; z-index: 2; top: 520px; left: 128px; width: 824px; height: 668px; margin: 0; padding: 34px 34px 130px; background: #fafafa; box-shadow: 0 22px 45px rgba(0, 0, 0, .3); }
+.print-window { width: 100%; height: 100%; overflow: hidden; background: #dce2e7; }
+.print-window img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.brand { position: absolute; z-index: 3; right: 62px; bottom: 48px; width: 112px; height: auto; }
+

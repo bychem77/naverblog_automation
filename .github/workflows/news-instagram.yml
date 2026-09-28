@@ -1,0 +1,142 @@
+name: BYCHEM News Instagram
+
+on:
+  workflow_dispatch:
+    inputs:
+      json_path:
+        description: "News input (for example: news/data/2026-09-28_event.json)"
+        required: true
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - "news/data/*.json"
+      - "news/assets/approved/**"
+      - "cardnews/templates/news_post.html"
+      - "cardnews/templates/news_post.css"
+      - "cardnews/scripts/render_news_post.js"
+      - "cardnews/assets/logo_white.svg"
+      - "cardnews/package.json"
+      - "cardnews/pnpm-lock.yaml"
+      - ".github/workflows/news-instagram.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: news-instagram-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Determine news inputs
+        id: scope
+        if: github.event_name == 'push'
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p news/.workflow
+          target_file="news/.workflow/render_targets.txt"
+          : > "$target_file"
+
+          render_all=false
+          if [[ "$BEFORE_SHA" =~ ^0+$ ]] || ! git cat-file -e "$BEFORE_SHA^{commit}" 2>/dev/null; then
+            render_all=true
+          else
+            mapfile -d '' changed_files < <(git diff --name-only --diff-filter=ACMR -z "$BEFORE_SHA" "$AFTER_SHA")
+            for file in "${changed_files[@]}"; do
+              case "$file" in
+                news/assets/approved/*|cardnews/templates/news_post.html|cardnews/templates/news_post.css|cardnews/scripts/render_news_post.js|cardnews/assets/logo_white.svg|cardnews/package.json|cardnews/pnpm-lock.yaml|.github/workflows/news-instagram.yml)
+                  render_all=true
+                  break
+                  ;;
+              esac
+            done
+          fi
+
+          if [[ "$render_all" == true ]]; then
+            find news/data -maxdepth 1 -type f -name '*.json' -print | sort -u > "$target_file"
+          else
+            for file in "${changed_files[@]}"; do
+              case "$file" in news/data/*.json) printf '%s\n' "$file" >> "$target_file" ;; esac
+            done
+            sort -u -o "$target_file" "$target_file"
+          fi
+
+          if [[ -s "$target_file" ]]; then
+            echo "has_targets=true" >> "$GITHUB_OUTPUT"
+            sed 's/^/- /' "$target_file"
+          else
+            echo "has_targets=false" >> "$GITHUB_OUTPUT"
+            echo "No news inputs changed."
+          fi
+
+      - name: Set up pnpm
+        if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.15.1
+
+      - name: Set up Node.js
+        if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: cardnews/pnpm-lock.yaml
+
+      - name: Install dependencies
+        if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
+        working-directory: cardnews
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
+        working-directory: cardnews
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Render selected news input
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          INPUT_JSON: ${{ inputs.json_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! "$INPUT_JSON" =~ ^news/data/[A-Za-z0-9_-]+\.json$ ]]; then
+            echo "Input must be a JSON file directly under news/data/." >&2
+            exit 1
+          fi
+          test -f "$INPUT_JSON"
+          name=$(basename "$INPUT_JSON" .json)
+          node cardnews/scripts/render_news_post.js "$INPUT_JSON" "news/output/$name.png"
+
+      - name: Render new or modified news inputs
+        if: github.event_name == 'push' && steps.scope.outputs.has_targets == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r input; do
+            name=$(basename "$input" .json)
+            node cardnews/scripts/render_news_post.js "$input" "news/output/$name.png"
+          done < news/.workflow/render_targets.txt
+
+      - name: Upload Instagram PNG
+        if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: bychem-news-instagram-${{ github.run_number }}
+          path: news/output/*.png
+          if-no-files-found: error
+          retention-days: 30
+

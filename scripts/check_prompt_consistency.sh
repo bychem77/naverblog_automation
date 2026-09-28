@@ -30,6 +30,7 @@ reject_text() {
 }
 
 require_text "$master" '이 파일은 현재 운영 규칙의 단일 기준이다.' '마스터 프롬프트에 단일 기준 선언이 없습니다.'
+require_text "$master" '`BYCHEM 뉴스` 블로그 글마다 인스타그램 게시물용 1080×1350 PNG' '뉴스 인스타그램 이미지 규칙이 없습니다.'
 require_text "$master" '긴 변 약 168~198px' '현재 스티커 크기 규칙이 없습니다.'
 require_text "$master" 'Pretendard ExtraBold 800, 70pt' '현재 대표사진 제목 규칙이 없습니다.'
 require_text "$master" '본문은 나눔고딕 16pt·행간 200%' '현재 본문 서식 규칙이 없습니다.'
@@ -39,6 +40,7 @@ require_text "$master" '전용 배경 이미지만 사용한다' '카드뉴스 �
 require_text "$master" '기본값은 도입부 첫 인사 위치의 `안녕하세요` 스티커 1개' '현재 기본 스티커 규칙이 없습니다.'
 require_text "$image_prompt" '항상 `BYCHEM_NAVERBLOG_MASTER_PROMPT.md`의 현재 버전을 따른다' '이미지 보조 프롬프트에 우선순위 선언이 없습니다.'
 require_text "$automation" '`templates/review_email.html`' '자동화 프롬프트에 HTML 검수 메일 템플릿이 없습니다.'
+require_text "$automation" '`news/data/`' '자동화 프롬프트에 뉴스 인스타그램 입력 단계가 없습니다.'
 require_text "$architecture" '콘텐츠 결과물을 바꾸는 규칙은 마스터 프롬프트에서만 결정한다.' '문서 구조에 콘텐츠 단일 기준이 없습니다.'
 
 reject_text "$master" '긴 변 약 160~185px' '마스터 프롬프트에 이전 스티커 크기가 남아 있습니다.'
