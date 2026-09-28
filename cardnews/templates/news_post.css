@@ -47,6 +47,20 @@ body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; }
   color: #fff;
 }
 
+.news-date {
+  position: absolute;
+  top: 62px;
+  right: 68px;
+  z-index: 3;
+  white-space: nowrap;
+  text-align: right;
+  font-size: 36.4px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -.63px;
+  color: #fff;
+}
+
 .story {
   position: absolute;
   z-index: 2;
