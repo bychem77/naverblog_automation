@@ -1,0 +1,119 @@
+name: BYCHEM News Blog
+
+on:
+  workflow_dispatch:
+    inputs:
+      json_path:
+        description: "News JSON containing a blog object"
+        required: true
+        default: "news/data/2026-09-18_ai_project.json"
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - "news/data/*.json"
+      - "news/blog/export_news_blog.js"
+      - "prompts/BYCHEM_PRESS_RELEASE_TO_INSTAGRAM_PROMPT.md"
+      - ".github/workflows/news-blog.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: news-blog-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Determine news blog inputs
+        id: scope
+        if: github.event_name == 'push'
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p news/blog/.workflow
+          target="news/blog/.workflow/render_targets.txt"
+          : > "$target"
+
+          if [[ "$BEFORE_SHA" =~ ^0+$ ]] || ! git cat-file -e "$BEFORE_SHA^{commit}" 2>/dev/null; then
+            find news/data -maxdepth 1 -type f -name '*.json' -print | sort -u > "$target"
+          else
+            mapfile -d '' changed < <(git diff --name-only --diff-filter=ACMR -z "$BEFORE_SHA" "$AFTER_SHA")
+            render_all=false
+            for file in "${changed[@]}"; do
+              case "$file" in
+                news/blog/export_news_blog.js|prompts/BYCHEM_PRESS_RELEASE_TO_INSTAGRAM_PROMPT.md|.github/workflows/news-blog.yml)
+                  render_all=true
+                  ;;
+              esac
+            done
+
+            if [[ "$render_all" == true ]]; then
+              find news/data -maxdepth 1 -type f -name '*.json' -print | sort -u > "$target"
+            else
+              for file in "${changed[@]}"; do
+                case "$file" in news/data/*.json) printf '%s\n' "$file" >> "$target" ;; esac
+              done
+              sort -u -o "$target" "$target"
+            fi
+          fi
+
+          valid="news/blog/.workflow/valid_targets.txt"
+          : > "$valid"
+          while IFS= read -r input; do
+            if grep -q '"blog"[[:space:]]*:' "$input"; then
+              printf '%s\n' "$input" >> "$valid"
+            fi
+          done < "$target"
+          mv "$valid" "$target"
+
+          if [[ -s "$target" ]]; then
+            echo "has_targets=true" >> "$GITHUB_OUTPUT"
+            sed 's/^/- /' "$target"
+          else
+            echo "has_targets=false" >> "$GITHUB_OUTPUT"
+            echo "No BYCHEM News blog inputs changed."
+          fi
+
+      - name: Export selected news blog
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          INPUT_JSON: ${{ inputs.json_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$INPUT_JSON" in news/data/*.json) ;; *) echo "Input must be under news/data/" >&2; exit 1 ;; esac
+          mkdir -p news/blog/output
+          name=$(basename "$INPUT_JSON" .json)
+          node news/blog/export_news_blog.js "$INPUT_JSON" "news/blog/output/${name}.md"
+
+      - name: Export new or modified news blogs
+        if: github.event_name == 'push' && steps.scope.outputs.has_targets == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p news/blog/output
+          while IFS= read -r input; do
+            name=$(basename "$input" .json)
+            node news/blog/export_news_blog.js "$input" "news/blog/output/${name}.md"
+          done < news/blog/.workflow/render_targets.txt
+
+      - name: Upload news blog drafts
+        if: github.event_name == 'workflow_dispatch' || steps.scope.outputs.has_targets == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: bychem-news-blog-${{ github.run_number }}
+          path: news/blog/output/*.md
+          if-no-files-found: error
+          retention-days: 30
