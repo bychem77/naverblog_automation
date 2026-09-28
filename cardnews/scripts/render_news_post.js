@@ -33,23 +33,62 @@ if (path.isAbsolute(data.image) || /^https?:\/\//i.test(data.image)) {
 }
 
 const imagePath = path.resolve(repoRoot, data.image);
-if (!imagePath.startsWith(repoRoot + path.sep) || !/\.(png|jpe?g|webp)$/i.test(imagePath) || !fs.statSync(imagePath, { throwIfNoEntry: false })?.isFile()) {
+if (
+  !imagePath.startsWith(repoRoot + path.sep) ||
+  !/\.(png|jpe?g|webp)$/i.test(imagePath) ||
+  !fs.statSync(imagePath, { throwIfNoEntry: false })?.isFile()
+) {
   throw new Error(`Approved image file not found within repository: ${data.image}`);
+}
+
+async function decodeImage(page, selector) {
+  await page.locator(selector).evaluate(async (image) => {
+    if (!image.complete || image.naturalWidth === 0) {
+      await new Promise((resolve, reject) => {
+        image.addEventListener('load', resolve, { once: true });
+        image.addEventListener('error', reject, { once: true });
+      });
+    }
+    if (typeof image.decode === 'function') {
+      await image.decode();
+    }
+    if (!image.naturalWidth || !image.naturalHeight) {
+      throw new Error('Decoded image has invalid dimensions');
+    }
+  });
 }
 
 async function main() {
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   const browser = await chromium.launch({ headless: true });
+
   try {
-    const page = await browser.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 1 });
-    await page.goto(pathToFileURL(path.resolve(__dirname, '../templates/news_post.html')).href, { waitUntil: 'load' });
+    const page = await browser.newPage({
+      viewport: { width: 1080, height: 1350 },
+      deviceScaleFactor: 1
+    });
+
+    await page.goto(
+      pathToFileURL(path.resolve(__dirname, '../templates/news_post.html')).href,
+      { waitUntil: 'load' }
+    );
+
     await page.evaluate((payload) => window.renderNewsPost(payload), {
       title: data.title.trim(),
       subtitle: data.subtitle?.trim() || '',
       imageUrl: pathToFileURL(imagePath).href
     });
-    await page.locator('.brand').evaluate((image) => image.decode());
-    await page.locator('#post').screenshot({ path: outputPath, animations: 'disabled' });
+
+    await decodeImage(page, '#background');
+    await decodeImage(page, '#photo');
+    await decodeImage(page, '.brand');
+    await page.evaluate(() => document.fonts.ready);
+
+    await page.locator('#post').screenshot({
+      path: outputPath,
+      animations: 'disabled'
+    });
+
     console.log(`Rendered ${outputPath}`);
   } finally {
     await browser.close();
@@ -60,4 +99,3 @@ main().catch((error) => {
   console.error(error);
   process.exit(1);
 });
-
