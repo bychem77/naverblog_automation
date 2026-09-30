@@ -12,8 +12,8 @@
 
 이미지는 다음 순서로 선택합니다.
 
-1. `cardnews/assets/approved/원고파일명/`에 저장한 검수 완료 이미지
-2. `OPENAI_API_KEY`가 설정된 경우 사내 OpenAI API 생성 이미지
+1. `cardnews/assets/approved/원고파일명/`에 저장한 **세로형 카드뉴스용** 검수 완료 이미지. 가로형·정사각형 블로그 이미지/인포그래픽은 자동 제외합니다.
+2. 제외된 이미지나 미확정 페이지는 `OPENAI_API_KEY`가 설정된 경우 카드뉴스 4:5 세로 구도에 맞춰 새 이미지를 생성합니다.
 3. API 생성이 불가능하거나 실패하면 Pexels 무료 스톡 사진. 1080×1350으로 맞추고 명암, 색감, 선명도를 자동 보정합니다.
 4. 기존 임시 배경
 
@@ -34,7 +34,7 @@ pnpm exec playwright install chromium
 pnpm build data/sample.md output/sample
 ```
 
-검수 완료 이미지는 재보정 없이 가장 먼저 사용합니다. API 키가 없거나 이미지 생성이 실패해도 나머지 페이지는 임시 배경으로 정상 렌더링됩니다.
+검수 완료 이미지라도 카드뉴스 배경으로 안전한 세로 구도인지 먼저 확인합니다. 가로형 또는 정사각형 이미지는 `background-cover`로 잘릴 위험이 있어 재사용하지 않고, OpenAI로 카드뉴스용 세로 이미지를 새로 생성한 뒤 실패하면 Pexels 세로 사진으로 대체합니다. API 키가 모두 없으면 해당 페이지는 임시 배경으로 렌더링됩니다.
 
 결과는 `output/sample/`에 `cardnews.json`, 표지, 본문 3~6장, 아웃트로 PNG로 생성됩니다. 아웃트로 파일 번호는 본문 장수에 따라 자동으로 정해집니다.
 
@@ -77,7 +77,7 @@ cardnews/assets/approved/2026-08-26_IPA/content_01.png
 cardnews/assets/approved/2026-08-26_IPA/content_02.png
 ```
 
-`cover_background`는 표지와 아웃트로에 함께 사용하는 카드뉴스 전용 무문자 배경입니다. 블로그 대표사진이나 `01_cover.png`처럼 제목이 이미 합성된 파일은 사용할 수 없습니다. 본문은 `content_01`부터 순서대로 연결됩니다. 일부 이미지만 확정해도 나머지는 사내 OpenAI API부터 자동으로 채우고, API 생성이 실패한 페이지만 Pexels로 보완합니다. Pexels 또는 OpenAI에서 만든 확정 이미지의 출처 표시는 같은 폴더의 `sources.json`에 기록합니다. 자세한 형식은 [`assets/approved/README.md`](assets/approved/README.md)를 참고합니다.
+`cover_background`는 표지와 아웃트로에 함께 사용하는 카드뉴스 전용 무문자 배경입니다. 블로그 대표사진이나 `01_cover.png`처럼 제목이 이미 합성된 파일은 사용할 수 없습니다. 본문은 `content_01`부터 순서대로 연결됩니다. 단, 블로그용 가로 인포그래픽·도표·와이드 이미지를 그대로 넣지 않습니다. 파일이 존재해도 가로형/정사각형이면 자동 제외하고 카드뉴스 전용 세로 이미지를 다시 생성하며, OpenAI 생성이 실패한 페이지만 Pexels 세로 사진으로 보완합니다. 일부 이미지만 확정해도 나머지는 같은 순서로 자동 채웁니다. Pexels 또는 OpenAI에서 만든 확정 이미지의 출처 표시는 같은 폴더의 `sources.json`에 기록합니다. 자세한 형식은 [`assets/approved/README.md`](assets/approved/README.md)를 참고합니다.
 
 Actions 아티팩트를 검수할 때는 각 원고 폴더의 `images/`에 들어 있는 글자 없는 배경 이미지 중 확정본을 위 경로로 복사합니다. 표지 배경은 `cover_background.png`라는 이름으로 저장합니다. `01_cover.png`처럼 글자가 합성된 최종 카드 PNG나 블로그 대표사진을 복사하지 않습니다.
 
