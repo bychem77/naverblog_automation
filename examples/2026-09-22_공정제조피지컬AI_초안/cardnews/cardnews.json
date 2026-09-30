@@ -49,7 +49,7 @@
     }
   ],
   "outro": {
-    "notice": "* 본 콘텐츠에는 담당자 검수를 완료한 확정 이미지가 사용되었습니다.",
+    "notice": "* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.",
     "background": "../../examples/2026-09-22_공정제조피지컬AI_초안/cardnews/images/cover_background.png",
     "same_background_as": "cover",
     "image_prompt": "Reuse the exact same generated image file as cover.background. Do not generate a variation."
@@ -82,3 +82,4 @@
     }
   }
 }
+
