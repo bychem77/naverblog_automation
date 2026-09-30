@@ -3,6 +3,7 @@ name: 바이켐 블로그·카드뉴스 자동 제작
 kind: heartbeat
 status: active
 timezone: Asia/Seoul
+start_date: 2026-09-29
 schedule:
   days:
     - Tuesday
