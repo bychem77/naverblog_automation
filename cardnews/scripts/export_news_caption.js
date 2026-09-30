@@ -18,6 +18,10 @@ if (typeof data.caption !== "string" || !data.caption.trim()) {
   throw new Error("caption is required and must be a non-empty string.");
 }
 
+if (typeof data.caption_en !== "string" || !data.caption_en.trim()) {
+  throw new Error("caption_en is required and must be a non-empty string.");
+}
+
 if (!Array.isArray(data.hashtags) || data.hashtags.length === 0) {
   throw new Error("hashtags is required and must be a non-empty array.");
 }
@@ -30,7 +34,7 @@ const hashtags = data.hashtags.map((tag) => {
   return clean.startsWith("#") ? clean : `#${clean}`;
 });
 
-const content = `${data.caption.trim()}\n\n${hashtags.join(" ")}\n`;
+const content = `${data.caption.trim()}\n\n${data.caption_en.trim()}\n\n${hashtags.join(" ")}\n`;
 
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, content, "utf8");
