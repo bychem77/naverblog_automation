@@ -1,6 +1,6 @@
 # BYCHEM 뉴스 인스타그램
 
-보도자료·행사 결과자료를 바탕으로 **1080×1350 PNG 1장 + 인스타그램 캡션/해시태그 텍스트**를 생성합니다.
+보도자료·행사 결과자료를 바탕으로 **1080×1350 PNG 1장 + 한국어/영문 인스타그램 캡션/해시태그 텍스트**를 생성합니다.
 
 ## 고정 디자인
 
@@ -30,7 +30,8 @@ JSON: `news/data/YYYY-MM-DD_slug.json`
   "title": "짧고 명확한 이미지 제목",
   "subtitle": "제목을 보완하는 한 줄 부제",
   "image": "news/assets/approved/approved_photo.jpg",
-  "caption": "인스타그램 캡션",
+  "caption": "인스타그램 한국어 캡션",
+  "caption_en": "Simple English translation of the caption.",
   "hashtags": ["#바이켐", "#BYCHEM"]
 }
 ```
@@ -42,8 +43,21 @@ JSON: `news/data/YYYY-MM-DD_slug.json`
 - `subtitle`: 제목 반복 금지, 핵심 성과·행사 의미를 한 줄로 보완
 - `image`: 실제 사용 승인된 회사·행사 사진만 사용
 - `caption`: 2~4개의 짧은 문단, 약 150~300자, 이모지 1~3개
+- `caption_en`: 한국어 캡션의 핵심 내용을 1~3개의 짧고 자연스러운 영어 문단으로 번역
 - `hashtags`: 6~10개, `#바이켐` `#BYCHEM` 기본 포함
 - 원자료에 없는 수치·성과·인용문·평가를 추가하지 않음
+
+## 캡션 텍스트 파일 형식
+
+`*_caption.txt`는 아래 순서로 생성됩니다.
+
+```text
+한국어 캡션
+
+Simple English caption.
+
+#바이켐 #BYCHEM ...
+```
 
 ## 자동화
 
