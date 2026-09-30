@@ -294,7 +294,7 @@ async function main() {
   } else if (usesOpenai) {
     data.outro.notice = '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.';
   } else if (approvedCount) {
-    data.outro.notice = '* 본 콘텐츠에는 담당자 검수를 완료한 확정 이미지가 사용되었습니다.';
+    data.outro.notice = '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.';
   } else {
     data.outro.notice = '* 본 콘텐츠의 이미지는 내용의 이해를 돕기 위한 자료입니다.';
   }
