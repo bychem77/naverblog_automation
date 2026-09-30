@@ -14,6 +14,8 @@ OUTPUT_DIR=${2:-"$CARDNEWS_DIR/output/$INPUT_NAME"}
 JSON_PATH="$OUTPUT_DIR/cardnews.json"
 
 mkdir -p "$OUTPUT_DIR"
+node "$SCRIPT_DIR/export_cardnews_caption.js" "$INPUT_PATH" "$OUTPUT_DIR/instagram_caption.txt"
 node "$SCRIPT_DIR/md_to_cardnews.js" "$INPUT_PATH" "$JSON_PATH"
 node "$SCRIPT_DIR/generate_images.js" "$JSON_PATH" "$OUTPUT_DIR"
 node "$SCRIPT_DIR/render_cardnews.js" "$JSON_PATH" "$OUTPUT_DIR"
+

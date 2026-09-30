@@ -12,6 +12,7 @@ on:
     branches: [main]
     paths:
       - "cardnews/data/**/*.md"
+      - "cardnews/data/**/*.caption.json"
       - "cardnews/scripts/**"
       - "!cardnews/scripts/render_news_post.js"
       - "!cardnews/scripts/export_news_caption.js"
@@ -87,6 +88,11 @@ jobs:
           else
             for file in "${changed_files[@]}"; do
               case "$file" in
+                cardnews/data/*.caption.json)
+                  manuscript="${file%.caption.json}.md"
+                  test -f "$manuscript"
+                  printf '%s\n' "${manuscript#cardnews/}" >> "$target_file"
+                  ;;
                 cardnews/data/*.md)
                   name=$(basename "$file")
                   if [[ "$name" != "README.md" && "$name" != "sample.md" ]]; then

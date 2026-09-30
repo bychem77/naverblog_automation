@@ -9,7 +9,8 @@
     "generate-images": "node scripts/generate_images.js",
     "render": "node scripts/render_cardnews.js",
     "news": "node scripts/render_news_post.js",
-    "build": "sh scripts/render.sh"
+    "build": "sh scripts/render.sh",
+    "caption": "node scripts/export_cardnews_caption.js"
   },
   "dependencies": {
     "playwright": "1.62.1",

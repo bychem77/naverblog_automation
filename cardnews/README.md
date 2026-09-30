@@ -82,3 +82,14 @@ cardnews/assets/approved/2026-08-26_IPA/content_02.png
 Actions 아티팩트를 검수할 때는 각 원고 폴더의 `images/`에 들어 있는 글자 없는 배경 이미지 중 확정본을 위 경로로 복사합니다. 표지 배경은 `cover_background.png`라는 이름으로 저장합니다. `01_cover.png`처럼 글자가 합성된 최종 카드 PNG나 블로그 대표사진을 복사하지 않습니다.
 
 API 키와 토큰은 저장소에 커밋하지 않습니다.
+
+## 인스타그램 캡션 TXT
+
+인사이트 원고마다 같은 이름의 `.caption.json`에 `category`, `caption`, `caption_en`, `hashtags`를 저장합니다. 작성 기준은 마스터 프롬프트를 따릅니다. 빌드 시 PNG·JSON과 함께 `instagram_caption.txt`가 생성되어 동일 Actions 아티팩트에 포함됩니다. 캡션 JSON만 수정해도 해당 원고가 다시 빌드됩니다. 필수값 누락은 이미지 생성 전에 오류로 안내합니다.
+
+```bash
+pnpm caption data/2026-09-22_process_physical_ai.md output/2026-09-22_process_physical_ai/instagram_caption.txt
+```
+
+현재 원고의 게시용 텍스트는 `cardnews/captions/`에서도 확인할 수 있습니다.
+

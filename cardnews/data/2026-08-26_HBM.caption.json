@@ -1,0 +1,16 @@
+{
+  "category": "BYCHEM 인사이트",
+  "caption": "🧠 AI 반도체 이야기에서 자주 등장하는 HBM, 어떤 메모리일까요?\n\n여러 DRAM을 수직으로 쌓고 넓은 데이터 통로로 AI 프로세서에 연결해, 필요한 데이터를 빠르게 전달하는 고대역폭 메모리예요.\n\n적층·접합·배선·열관리까지, 작은 패키지에 담긴 기술을 카드뉴스로 살펴보세요. 🔎",
+  "caption_en": "🧠 What is HBM, the memory often mentioned in discussions about AI chips?\n\nHigh Bandwidth Memory stacks DRAM dies vertically and connects them to an AI processor through a wide interface to deliver data quickly.\n\nSwipe through to explore the stacking, bonding, interconnects, and thermal management inside this small package. 🔎",
+  "hashtags": [
+    "#바이켐",
+    "#BYCHEM",
+    "#HBM",
+    "#고대역폭메모리",
+    "#AI반도체",
+    "#반도체패키징",
+    "#TSV",
+    "#첨단소재"
+  ]
+}
+
