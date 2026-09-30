@@ -37,7 +37,7 @@ require_text "$master" '본문은 나눔고딕 16pt·행간 200%' '현재 본문
 require_text "$master" '빈 줄 3개, 즉 Enter 3번' '현재 소제목 간격 규칙이 없습니다.'
 require_text "$master" '소제목 → Enter 1번 → 첫 설명 문단' '현재 소제목 줄 분리 규칙이 없습니다.'
 require_text "$master" '전용 배경 이미지만 사용한다' '카드뉴스 무문자 표지 배경 규칙이 없습니다.'
-require_text "$master" '기본값은 도입부 첫 인사 위치의 `안녕하세요` 스티커 1개' '현재 기본 스티커 규칙이 없습니다.'
+require_text "$master" '기본값은 도입부 첫 인사 위치의 `안녕하세요` 래미 스티커 1개' '현재 기본 래미 스티커 규칙이 없습니다.'
 require_text "$image_prompt" '항상 `BYCHEM_NAVERBLOG_MASTER_PROMPT.md`의 현재 버전을 따른다' '이미지 보조 프롬프트에 우선순위 선언이 없습니다.'
 require_text "$automation" '`templates/review_email.html`' '자동화 프롬프트에 HTML 검수 메일 템플릿이 없습니다.'
 require_text "$automation" '`news/data/`' '자동화 프롬프트에 뉴스 인스타그램 입력 단계가 없습니다.'
