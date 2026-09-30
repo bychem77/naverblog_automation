@@ -300,22 +300,9 @@ async function main() {
   const approvedPexelsCount = results.filter((result) => result.provider === 'approved' && result.source === 'pexels').length;
   const approvedOpenaiCount = results.filter((result) => result.provider === 'approved' && result.source === 'openai').length;
   const placeholderCount = jobs.length - approvedCount - pexelsCount - openaiCount;
-  const usesPexels = pexelsCount + approvedPexelsCount > 0;
-  const usesOpenai = openaiCount + approvedOpenaiCount > 0;
-
   data.outro.background = data.cover.background;
   data.outro.same_background_as = 'cover';
-  if (usesPexels && usesOpenai) {
-    data.outro.notice = '* 본 콘텐츠에는 Pexels 제공 사진과 내용의 이해를 돕기 위한 AI 생성 이미지가 사용되었습니다.';
-  } else if (usesPexels) {
-    data.outro.notice = '* 본 콘텐츠에는 Pexels 제공 사진이 사용되었습니다.';
-  } else if (usesOpenai) {
-    data.outro.notice = '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.';
-  } else if (approvedCount) {
-    data.outro.notice = '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.';
-  } else {
-    data.outro.notice = '* 본 콘텐츠의 이미지는 내용의 이해를 돕기 위한 자료입니다.';
-  }
+  data.outro.notice = '* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.';
   data.metadata = {
     ...data.metadata,
     image_sources: {
