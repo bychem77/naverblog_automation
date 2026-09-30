@@ -60,6 +60,17 @@ function findApprovedImage(directory, stem) {
   return null;
 }
 
+async function isCardSafeApprovedImage(filePath) {
+  const meta = await sharp(filePath).metadata();
+  if (!meta.width || !meta.height) return { safe: false, reason: 'unknown dimensions' };
+  const ratio = meta.width / meta.height;
+  // Card-news is 4:5 portrait. Landscape/square blog infographics are not reused.
+  if (ratio >= 0.95) {
+    return { safe: false, reason: meta.width + 'x' + meta.height + ' (landscape/square; card-news requires portrait-safe composition)' };
+  }
+  return { safe: true, reason: meta.width + 'x' + meta.height };
+}
+
 function readApprovedSources(directory) {
   const manifestPath = path.join(directory, 'sources.json');
   if (!fs.existsSync(manifestPath)) return {};
@@ -252,6 +263,13 @@ async function main() {
   for (const job of jobs) {
     const approvedPath = findApprovedImage(approvedDir, job.approvedStem);
     if (!approvedPath) {
+      pending.push(job);
+      continue;
+    }
+
+    const suitability = await isCardSafeApprovedImage(approvedPath);
+    if (!suitability.safe) {
+      console.warn(`Skipping approved image ${path.basename(approvedPath)} for ${job.label}: ${suitability.reason}. A card-specific portrait image will be sourced instead.`);
       pending.push(job);
       continue;
     }
