@@ -1,0 +1,8 @@
+{
+  "cover_background.png": {"source": "OpenAI image generation", "note": "AI-generated text-free background"},
+  "content_01.png": {"source": "BYCHEM original infographic", "note": "code-rendered diagram"},
+  "content_02.png": {"source": "BYCHEM original infographic", "note": "code-rendered diagram"},
+  "content_03.png": {"source": "BYCHEM original infographic", "note": "code-rendered diagram"},
+  "content_04.png": {"source": "BYCHEM original infographic", "note": "code-rendered diagram"},
+  "content_05.png": {"source": "BYCHEM original infographic", "note": "code-rendered diagram"}
+}

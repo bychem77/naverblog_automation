@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "brand_line": "BYCHEM   |   INSIGHT",
+  "brand": {
+    "blue": "#0072CE",
+    "green": "#009140",
+    "font": "Pretendard"
+  },
+  "source_md": "2026-10-01_semiconductor_high_purity_solvent.md",
+  "cover": {
+    "title": "반도체용 고순도 용제, 일반 용제와 무엇이 다를까요?",
+    "hashtags": [
+      "#BYCHEM",
+      "#산업인사이트",
+      "#첨단소재"
+    ],
+    "background": "../output/2026-10-01_semiconductor_high_purity_solvent/images/cover_background.png",
+    "image_prompt": "Create a premium hero image for a Korean BYCHEM B2B card-news cover about \"반도체용 고순도 용제, 일반 용제와 무엇이 다를까요?\". Visually express the specific subject using realistic industrial, laboratory, material, or technology photography. Clean professional mood, strong single focal point, 4:5 portrait composition, leave the lower 40 percent calm enough for a large Korean title, no text, no logo, no watermark, no identifiable company or product, no hazardous or sensational scene.",
+    "image_query": "BYCHEM"
+  },
+  "slides": [
+    {
+      "title": "순도 숫자만으로는 부족해요",
+      "body": "반도체용 용제는 주성분 함량뿐 아니라 공정에 영향을 줄 수 있는 미량 오염을 함께 관리해요. 같은 이름의 용제라도 사용 공정과 시험 항목이 다르면 품질을 단순 비교하기 어렵습니다.",
+      "background": "../output/2026-10-01_semiconductor_high_purity_solvent/images/content_01.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"순도 숫자만으로는 부족해요\". Show 반도체용 용제는 주성분 함량뿐 아니라 공정에 영향을 줄 수 있는 미량 오염을 함께 관리해요. 같은 이름의 용제라도 사용 공정과 시험 항목이 다르면 품질을 단순 비교하기 어렵습니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "semiconductor manufacturing facility"
+    },
+    {
+      "title": "수분과 금속을 따로 확인해요",
+      "body": "수분은 용해와 건조 거동에 영향을 줄 수 있고, 미량 금속은 웨이퍼와 공정 재료의 특성에 영향을 줄 가능성이 있어요. 제품 규격과 분석법의 검출한계, 샘플링 조건을 함께 확인해야 합니다.",
+      "background": "../output/2026-10-01_semiconductor_high_purity_solvent/images/content_02.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"수분과 금속을 따로 확인해요\". Show 수분은 용해와 건조 거동에 영향을 줄 수 있고, 미량 금속은 웨이퍼와 공정 재료의 특성에 영향을 줄 가능성이 있어요. 제품 규격과 분석법의 검출한계, 샘플링 조건을 함께 확인해야 합니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "chemical process technology"
+    },
+    {
+      "title": "입자와 잔류물도 관리해요",
+      "body": "액체 속 입자와 용제가 증발한 뒤 남는 비휘발성 잔류물은 표면 결함의 원인이 될 수 있어요. 분석 장비와 시료 용기, 공시험까지 관리해야 낮은 농도의 오염을 신뢰성 있게 비교할 수 있습니다.",
+      "background": "../output/2026-10-01_semiconductor_high_purity_solvent/images/content_03.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"입자와 잔류물도 관리해요\". Show 액체 속 입자와 용제가 증발한 뒤 남는 비휘발성 잔류물은 표면 결함의 원인이 될 수 있어요. 분석 장비와 시료 용기, 공시험까지 관리해야 낮은 농도의 오염을 신뢰성 있게 비교할 수 있습니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "precision engineering workshop"
+    },
+    {
+      "title": "용기와 배관도 품질의 일부예요",
+      "body": "깨끗하게 정제된 용제도 용기, 마개, 배관, 밸브와 필터를 거치며 다시 오염될 수 있어요. 충전부터 사용 지점까지 접촉 재질, 밀봉, 보관과 로트 추적을 하나의 공급 체계로 관리합니다.",
+      "background": "../output/2026-10-01_semiconductor_high_purity_solvent/images/content_04.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"용기와 배관도 품질의 일부예요\". Show 깨끗하게 정제된 용제도 용기, 마개, 배관, 밸브와 필터를 거치며 다시 오염될 수 있어요. 충전부터 사용 지점까지 접촉 재질, 밀봉, 보관과 로트 추적을 하나의 공급 체계로 관리합니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "scientific research laboratory"
+    },
+    {
+      "title": "공정 목적에 맞춰 선택해요",
+      "body": "반도체용 신너와 세정용 용제는 용해력만으로 선택하지 않아요. 사용 목적, 건조 속도, 재료 적합성, 잔류물과 불순물 규격을 함께 검토해야 합니다.",
+      "background": "../output/2026-10-01_semiconductor_high_purity_solvent/images/content_05.png",
+      "image_prompt": "BYCHEM industrial editorial image about \"공정 목적에 맞춰 선택해요\". Show 반도체용 신너와 세정용 용제는 용해력만으로 선택하지 않아요. 사용 목적, 건조 속도, 재료 적합성, 잔류물과 불순물 규격을 함께 검토해야 합니다.. Realistic B2B industrial photography, clean professional mood, 4:5 portrait composition, leave the lower 40 percent as calm negative space for Korean text, balanced accent colors, no text, no logo, no watermark, no dark sci-fi, no hazardous scene, no identifiable company or product.",
+      "image_query": "industrial factory technology"
+    }
+  ],
+  "outro": {
+    "notice": "* 본 콘텐츠에 사용된 이미지는 내용의 이해를 돕기 위해 AI로 생성되었습니다.",
+    "background": "../output/2026-10-01_semiconductor_high_purity_solvent/images/cover_background.png",
+    "same_background_as": "cover",
+    "image_prompt": "Reuse the exact same generated image file as cover.background. Do not generate a variation."
+  },
+  "metadata": {
+    "derived_from": "반도체용 고순도 용제, 일반 용제와 무엇이 다를까요?",
+    "category": "BYCHEM 인사이트",
+    "sections_detected": [
+      "🔎 순도 숫자만으로는 부족해요",
+      "💧 수분과 금속을 따로 확인해요",
+      "🔬 입자와 잔류물도 관리해요",
+      "📦 용기와 배관도 품질의 일부예요",
+      "✅ 공정 목적에 맞춰 선택해요"
+    ],
+    "official_basis_present": false,
+    "beverage_topic": false,
+    "image_sources": {
+      "approved": 6,
+      "pexels": 0,
+      "openai": 0,
+      "placeholders": 0,
+      "total": 6,
+      "model": "gpt-image-2",
+      "size": "1024x1536",
+      "quality": "medium"
+    },
+    "approved_source_attribution": {
+      "pexels": 0,
+      "openai": 0,
+      "unspecified": 6
+    }
+  }
+}
