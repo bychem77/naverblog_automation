@@ -1,0 +1,17 @@
+{
+  "category": "BYCHEM 인사이트",
+  "caption": "🔥 AI 데이터센터는 왜 많은 전력을 사용하고 뜨거워질까요?\n\nGPU 같은 고성능 장비가 처리한 전력은 열로 바뀌고, 데이터센터는 이 열을 공기나 냉각유체를 이용해 계속 밖으로 옮겨야 합니다. 냉각유체와 열전달 부품, 배관과 씰 등 소재의 선택도 안정적인 열관리에 연결돼요.\n\nAI 데이터센터의 전력과 냉각 원리를 카드뉴스로 정리했습니다. ❄️",
+  "caption_en": "🔥 Why do AI data centers consume so much power and generate so much heat?\n\nThe power used by high performance systems such as GPUs ultimately becomes heat. Data centers must continuously move that heat away through air or cooling fluids, while materials used in thermal interfaces, piping, seals, and cooling loops also support reliable thermal management.\n\nSwipe through for a clear overview of power and cooling in AI data centers. ❄️",
+  "hashtags": [
+    "#바이켐",
+    "#BYCHEM",
+    "#산업인사이트",
+    "#AI데이터센터",
+    "#데이터센터냉각",
+    "#열관리",
+    "#액체냉각",
+    "#액침냉각",
+    "#냉각유체",
+    "#첨단소재"
+  ]
+}
