@@ -31,7 +31,15 @@ const hashtags = [...new Set(data.hashtags.map(tag => {
 if (!hashtags.includes('#바이켐') || !hashtags.includes('#BYCHEM')) {
   throw new Error('Hashtags must include #바이켐 and #BYCHEM.');
 }
-const content = data.caption.trim() + '\n\n' + data.caption_en.trim() + '\n\n' + hashtags.join(' ') + '\n';
+if (hashtags.length > 5) {
+  throw new Error('Instagram captions can include at most 5 hashtags.');
+}
+const contentBody = data.caption.trim() + '\n\n' + data.caption_en.trim() + '\n\n' + hashtags.join(' ');
+const characterCount = Array.from(contentBody).length;
+if (characterCount > 500) {
+  throw new Error('Instagram/Threads caption must be 500 characters or fewer; received ' + characterCount + '.');
+}
+const content = contentBody + '\n';
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, content, 'utf8');
 console.log('Wrote Instagram caption: ' + outputPath);

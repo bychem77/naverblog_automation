@@ -26,15 +26,31 @@ if (!Array.isArray(data.hashtags) || data.hashtags.length === 0) {
   throw new Error("hashtags is required and must be a non-empty array.");
 }
 
-const hashtags = data.hashtags.map((tag) => {
+const hashtags = [...new Set(data.hashtags.map((tag) => {
   if (typeof tag !== "string" || !tag.trim()) {
     throw new Error("Every hashtag must be a non-empty string.");
   }
   const clean = tag.trim();
+  if (/\s/.test(clean)) {
+    throw new Error("Hashtags cannot contain whitespace.");
+  }
   return clean.startsWith("#") ? clean : `#${clean}`;
-});
+}))];
 
-const content = `${data.caption.trim()}\n\n${data.caption_en.trim()}\n\n${hashtags.join(" ")}\n`;
+if (!hashtags.includes("#바이켐") || !hashtags.includes("#BYCHEM")) {
+  throw new Error("Hashtags must include #바이켐 and #BYCHEM.");
+}
+
+if (hashtags.length > 5) {
+  throw new Error("Instagram captions can include at most 5 hashtags.");
+}
+
+const contentBody = `${data.caption.trim()}\n\n${data.caption_en.trim()}\n\n${hashtags.join(" ")}`;
+const characterCount = Array.from(contentBody).length;
+if (characterCount > 500) {
+  throw new Error(`Instagram/Threads caption must be 500 characters or fewer; received ${characterCount}.`);
+}
+const content = `${contentBody}\n`;
 
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, content, "utf8");
