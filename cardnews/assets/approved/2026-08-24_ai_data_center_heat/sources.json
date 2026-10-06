@@ -1,0 +1,7 @@
+{
+  "cover_background.png": {"source": "OpenAI image generation", "note": "AI-generated text-free data center cooling background"},
+  "content_01.png": {"source": "OpenAI image generation", "note": "AI-generated GPU heat and cooling visualization"},
+  "content_02.png": {"source": "OpenAI image generation", "note": "AI-generated data center power infrastructure visualization"},
+  "content_03.png": {"source": "OpenAI image generation", "note": "AI-generated comparison of air, direct liquid and immersion cooling"},
+  "content_04.png": {"source": "OpenAI image generation", "note": "AI-generated cooling materials scene using approved BYCHEM mascot reference"}
+}
