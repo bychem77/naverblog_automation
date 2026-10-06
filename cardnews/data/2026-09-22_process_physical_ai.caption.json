@@ -1,16 +1,12 @@
 {
   "category": "BYCHEM 인사이트",
-  "caption": "🏭 피지컬 AI, 로봇만 떠오르시나요?\n\n화학 공장처럼 물질을 다루는 공정에서도 AI는 온도·압력·유량과 농도·점도 데이터를 읽고, 이상 징후와 품질 이탈 가능성을 분석하는 데 활용될 수 있어요.\n\n좋은 데이터와 담당자의 검토를 바탕으로 작은 문제부터 검증하는 흐름을 카드뉴스로 살펴보세요. 🔎",
-  "caption_en": "🏭 Does physical AI only bring robots to mind?\n\nIn process manufacturing, including chemical plants, AI can analyze temperature, pressure, flow, concentration, and viscosity data to help identify anomalies and potential quality deviations.\n\nSwipe through to see how reliable data and human review support a step-by-step approach, starting with clearly defined problems. 🔎",
+  "caption": "🏭 피지컬 AI는 로봇에만 쓰이는 기술이 아닙니다.\n\n화학 공정에서도 온도·압력·유량과 농도·점도 데이터를 분석해 이상 징후와 품질 이탈 가능성을 찾는 데 활용할 수 있어요. 좋은 데이터와 담당자의 검토를 바탕으로 작은 문제부터 검증해야 합니다. 🔎",
+  "caption_en": "🏭 Physical AI is not limited to robots.\n\nIn process manufacturing, AI can analyze temperature, pressure, flow, concentration, and viscosity data to identify anomalies and potential quality deviations. Reliable data and human review remain essential. 🔎",
   "hashtags": [
     "#바이켐",
     "#BYCHEM",
     "#산업인사이트",
     "#피지컬AI",
-    "#스마트제조",
-    "#공정자동화",
-    "#제조AI",
-    "#디지털트윈"
+    "#스마트제조"
   ]
 }
-

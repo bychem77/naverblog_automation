@@ -1,15 +1,12 @@
 {
   "category": "BYCHEM 인사이트",
-  "caption": "🧪 반도체용 고순도 용제는 순도 숫자만 높으면 충분할까요?\n\n반도체 공정에서는 주성분 함량과 함께 수분, 금속, 입자, 비휘발성 잔류물을 따로 살펴봅니다. 용기와 배관, 필터를 거치는 공급 과정도 실제 품질을 좌우할 수 있어요.\n\n공정 목적에 맞는 고순도 용제를 확인하는 기준을 카드뉴스로 정리했습니다. 🔎",
-  "caption_en": "🧪 Is a high purity number enough for semiconductor grade solvents?\n\nSemiconductor processes evaluate moisture, metals, particles, and nonvolatile residue in addition to the main component. Containers, piping, filters, and handling across the supply chain can also affect the quality delivered to the point of use.\n\nSwipe through for a practical overview of the key selection criteria. 🔎",
+  "caption": "🧪 반도체용 고순도 용제는 순도 숫자만으로 판단하기 어렵습니다.\n\n주성분 함량과 함께 수분, 금속, 입자와 비휘발성 잔류물을 확인해야 해요. 용기·배관·필터를 거치는 공급 과정도 실제 품질에 영향을 줄 수 있습니다. 🔎",
+  "caption_en": "🧪 Purity alone does not define a semiconductor grade solvent.\n\nMoisture, metals, particles, and nonvolatile residue also matter. Containers, piping, and filters can affect the quality delivered to the process. 🔎",
   "hashtags": [
     "#바이켐",
     "#BYCHEM",
     "#산업인사이트",
     "#반도체소재",
-    "#고순도용제",
-    "#반도체용신너",
-    "#미량오염",
-    "#오염관리"
+    "#고순도용제"
   ]
 }
