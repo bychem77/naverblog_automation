@@ -85,7 +85,7 @@ API 키와 토큰은 저장소에 커밋하지 않습니다.
 
 ## 인스타그램 캡션 TXT
 
-인사이트 원고마다 같은 이름의 `.caption.json`에 `category`, `caption`, `caption_en`, `hashtags`를 저장합니다. 작성 기준은 마스터 프롬프트를 따릅니다. 빌드 시 PNG·JSON과 함께 `instagram_caption.txt`가 생성되어 동일 Actions 아티팩트에 포함됩니다. 캡션 JSON만 수정해도 해당 원고가 다시 빌드됩니다. 필수값 누락은 이미지 생성 전에 오류로 안내합니다.
+인사이트 원고마다 같은 이름의 `.caption.json`에 `category`, `caption`, `caption_en`, `hashtags`를 저장합니다. 작성 기준은 마스터 프롬프트를 따르며 인스타그램 캡션 해시태그는 최대 5개로 제한합니다. 한국어·영문 캡션, 공백, 줄바꿈과 해시태그를 합친 최종 TXT는 500자 이하로 작성합니다. 빌드 시 PNG·JSON과 함께 `instagram_caption.txt`가 생성되어 동일 Actions 아티팩트에 포함됩니다. 캡션 JSON만 수정해도 해당 원고가 다시 빌드됩니다. 필수값 누락, 500자 초과 또는 해시태그 5개 초과는 이미지 생성 전에 오류로 안내합니다.
 
 ```bash
 pnpm caption data/2026-09-22_process_physical_ai.md output/2026-09-22_process_physical_ai/instagram_caption.txt
