@@ -57,6 +57,8 @@ require_text "$master" 'BYCHEM 인사이트는 스티커 필수 적용 대상에
 require_text "$master" '`안녕하세요` 래미 스티커와 캐릭터 인사를 넣지 않는다.' '인사이트 인사 스티커 금지 규칙이 없습니다.'
 require_text "$master" '`BYCHEM 인사이트` 소제목에는 이모지를 사용하지 않는다.' '인사이트 무이모지 소제목 규칙이 없습니다.'
 require_text "$master" '`BYCHEM 인사이트`에는 `한줄정리`를 넣지 않는다.' '인사이트 한줄정리 제외 규칙이 없습니다.'
+require_text "$master" '`BYCHEM 인사이트` 본문은 공백 포함 4,500~6,500자를 권장한다.' 'BYCHEM 인사이트 권장 분량 규칙이 없습니다.'
+require_text "$master" '정책·공급망처럼 확인할 사실과 영향 범위가 큰 주제는 최대 약 7,500자까지' 'BYCHEM 인사이트 확장 분량 규칙이 없습니다.'
 require_text "$master" '`참고자료`를 두고 실제 확인한 주요 원자료 3~8건' 'BYCHEM 인사이트 참고자료 표기 규칙이 없습니다.'
 require_text "$image_prompt" '항상 `BYCHEM_NAVERBLOG_MASTER_PROMPT.md`의 현재 버전을 따른다' '이미지 보조 프롬프트에 우선순위 선언이 없습니다.'
 require_text "$automation" '`templates/review_email.html`' '자동화 프롬프트에 HTML 검수 메일 템플릿이 없습니다.'
