@@ -55,6 +55,8 @@ require_text "$master" '바이켐 언급은 글 전체의 약 10~20% 안에서 �
 require_text "$master" '실제 연결 근거가 약하거나 공개 가능한 승인 자료가 없으면 바이켐을 억지로 언급하지 않는다.' '인사이트의 억지 회사 연결 금지 규칙이 없습니다.'
 require_text "$master" 'BYCHEM 인사이트는 스티커 필수 적용 대상에서 제외' '인사이트 스티커 예외 규칙이 없습니다.'
 require_text "$master" '`안녕하세요` 래미 스티커와 캐릭터 인사를 넣지 않는다.' '인사이트 인사 스티커 금지 규칙이 없습니다.'
+require_text "$master" '`BYCHEM 인사이트` 소제목에는 이모지를 사용하지 않는다.' '인사이트 무이모지 소제목 규칙이 없습니다.'
+require_text "$master" '`BYCHEM 인사이트`에는 `한줄정리`를 넣지 않는다.' '인사이트 한줄정리 제외 규칙이 없습니다.'
 require_text "$master" '`참고자료`를 두고 실제 확인한 주요 원자료 3~8건' 'BYCHEM 인사이트 참고자료 표기 규칙이 없습니다.'
 require_text "$image_prompt" '항상 `BYCHEM_NAVERBLOG_MASTER_PROMPT.md`의 현재 버전을 따른다' '이미지 보조 프롬프트에 우선순위 선언이 없습니다.'
 require_text "$automation" '`templates/review_email.html`' '자동화 프롬프트에 HTML 검수 메일 템플릿이 없습니다.'
