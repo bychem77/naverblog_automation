@@ -75,9 +75,19 @@ jobs:
               case "$file" in
                 cardnews/scripts/render_news_post.js|cardnews/scripts/export_news_caption.js|cardnews/templates/news_post.html|cardnews/templates/news_post.css)
                   ;;
-                cardnews/scripts/*|cardnews/templates/*|cardnews/assets/*|cardnews/package.json|cardnews/pnpm-lock.yaml|.github/workflows/cardnews.yml)
+                cardnews/assets/approved/*/*)
+                  asset_rel="${file#cardnews/assets/approved/}"
+                  asset_name="${asset_rel%%/*}"
+                  manuscript="cardnews/data/${asset_name}.md"
+                  if [[ -f "$manuscript" ]]; then
+                    printf '%s\\n' "${manuscript#cardnews/}" >> "$target_file"
+                  fi
+                  ;;
+                cardnews/assets/*|cardnews/scripts/*|cardnews/templates/*|cardnews/package.json|cardnews/pnpm-lock.yaml)
                   render_all=true
                   break
+                  ;;
+                .github/workflows/cardnews.yml)
                   ;;
               esac
             done
