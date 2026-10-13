@@ -80,7 +80,7 @@ jobs:
                   asset_name="${asset_rel%%/*}"
                   manuscript="cardnews/data/${asset_name}.md"
                   if [[ -f "$manuscript" ]]; then
-                    printf '%s\\n' "${manuscript#cardnews/}" >> "$target_file"
+                    printf '%s\n' "${manuscript#cardnews/}" >> "$target_file"
                   fi
                   ;;
                 cardnews/assets/*|cardnews/scripts/*|cardnews/templates/*|cardnews/package.json|cardnews/pnpm-lock.yaml)
