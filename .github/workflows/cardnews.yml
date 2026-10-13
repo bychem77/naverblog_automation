@@ -8,11 +8,6 @@ on:
         required: true
         default: "cardnews/data/sample.md"
         type: string
-      allow_paid_image_generation:
-        description: "Allow paid OpenAI image generation only when explicitly enabled"
-        required: false
-        default: false
-        type: boolean
   push:
     branches: [main]
     paths:
@@ -163,7 +158,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         env:
           INPUT_MARKDOWN: ${{ inputs.markdown_path }}
-          OPENAI_API_KEY: ${{ inputs.allow_paid_image_generation && secrets.OPENAI_API_KEY || '' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: |
           case "$INPUT_MARKDOWN" in
@@ -181,7 +176,7 @@ jobs:
       - name: Render new or modified Markdown inputs
         if: github.event_name == 'push' && steps.scope.outputs.has_targets == 'true'
         env:
-          OPENAI_API_KEY: ""
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: |
           while IFS= read -r input; do
