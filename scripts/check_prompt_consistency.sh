@@ -42,6 +42,7 @@ require_text "$master" '`assets/blog_footer/bychem_contact_banner.png`' '공통 
 require_text "$master" '`https://bychem.com/` 링크' '공통 문의 배너 링크 규칙이 없습니다.'
 require_text "$master" '수동 작성, 예약 자동화, 신규 게시와 기존 게시물 수정 모두 동일하게 적용한다.' '공통 문의 배너의 전체 게시물 적용 규칙이 없습니다.'
 require_text "$master" '모든 본문 텍스트와 소제목은 왼쪽 정렬한다.' 'BYCHEM 인사이트 왼쪽 정렬 규칙이 없습니다.'
+require_text "$master" '`BYCHEM 인사이트` 본문은 나눔고딕 16pt·행간 200%' 'BYCHEM 인사이트 본문 16pt 규칙이 없습니다.'
 require_text "$master" '기사 해설과 산업 브리핑 사이의 문체' 'BYCHEM 인사이트 정보형 문체 규칙이 없습니다.'
 require_text "$master" 'BYCHEM 인사이트 자료 출처 우선순위' 'BYCHEM 인사이트 출처 우선순위가 없습니다.'
 require_text "$master" 'BYCHEM 인사이트의 산업 인텔리전스 방향' 'BYCHEM 인사이트 산업 인텔리전스 방향이 없습니다.'
