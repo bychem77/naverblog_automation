@@ -1,50 +1,50 @@
 {
-  "cover_background": {
-    "source": "pexels",
-    "photo_id": 36771190,
-    "photographer": "Alex Levis",
-    "photo_url": "https://www.pexels.com/photo/industrial-container-handling-at-port-36771190/",
-    "license": "Pexels License",
-    "crop": "center 4:5, 1080x1350"
-  },
-  "content_01": {
-    "source": "pexels",
-    "photo_id": 36397852,
-    "photographer": "Willians Huerta",
-    "photo_url": "https://www.pexels.com/photo/industrial-scrap-metal-processing-facility-36397852/",
-    "license": "Pexels License",
-    "crop": "center 4:5, 1080x1350"
-  },
-  "content_02": {
-    "source": "pexels",
-    "photo_id": 29506757,
-    "photographer": "Deyler Rivera Segura",
-    "photo_url": "https://www.pexels.com/photo/open-pit-mine-with-heavy-excavation-machinery-29506757/",
-    "license": "Pexels License",
-    "crop": "center 4:5, 1080x1350"
-  },
-  "content_03": {
-    "source": "pexels",
-    "photo_id": 12275700,
-    "photographer": "Paul Seling",
-    "photo_url": "https://www.pexels.com/photo/pile-of-rocks-and-minerals-12275700/",
-    "license": "Pexels License",
-    "crop": "center 4:5, 1080x1350"
-  },
-  "content_04": {
-    "source": "pexels",
-    "photo_id": 32845661,
-    "photographer": "Sergey Sergeev",
-    "photo_url": "https://www.pexels.com/photo/industrial-engineer-operating-cnc-machine-in-factory-32845661/",
-    "license": "Pexels License",
-    "crop": "center 4:5, 1080x1350"
-  },
-  "content_05": {
-    "source": "pexels",
-    "photo_id": 36397854,
-    "photographer": "Willians Huerta",
-    "photo_url": "https://www.pexels.com/photo/industrial-scrap-metal-recycling-process-36397854/",
-    "license": "Pexels License",
-    "crop": "center 4:5, 1080x1350"
-  }
+    "cover_background": {
+        "source": "pexels",
+        "photo_id": 36771190,
+        "photographer": "Alex Levis",
+        "photo_url": "https://www.pexels.com/photo/industrial-container-handling-at-port-36771190/",
+        "license": "Pexels License",
+        "crop": "center 4:5, 1080x1350"
+    },
+    "content_01": {
+        "source": "pexels",
+        "photo_id": 36397852,
+        "photographer": "Willians Huerta",
+        "photo_url": "https://www.pexels.com/photo/industrial-scrap-metal-processing-facility-36397852/",
+        "license": "Pexels License",
+        "crop": "center 4:5, 1080x1350"
+    },
+    "content_02": {
+        "source": "pexels",
+        "photo_id": 29506757,
+        "photographer": "Deyler Rivera Segura",
+        "photo_url": "https://www.pexels.com/photo/open-pit-mine-with-heavy-excavation-machinery-29506757/",
+        "license": "Pexels License",
+        "crop": "center 4:5, 1080x1350"
+    },
+    "content_03": {
+        "source": "pexels",
+        "photo_id": 12275700,
+        "photographer": "Paul Seling",
+        "photo_url": "https://www.pexels.com/photo/pile-of-rocks-and-minerals-12275700/",
+        "license": "Pexels License",
+        "crop": "center 4:5, 1080x1350"
+    },
+    "content_04": {
+        "source": "pexels",
+        "photo_id": 32845661,
+        "photographer": "Sergey Sergeev",
+        "photo_url": "https://www.pexels.com/photo/industrial-engineer-operating-cnc-machine-in-factory-32845661/",
+        "license": "Pexels License",
+        "crop": "center 4:5, 1080x1350"
+    },
+    "content_05": {
+        "source": "pexels",
+        "photo_id": 36397854,
+        "photographer": "Willians Huerta",
+        "photo_url": "https://www.pexels.com/photo/industrial-scrap-metal-recycling-process-36397854/",
+        "license": "Pexels License",
+        "crop": "center 4:5, 1080x1350"
+    }
 }
